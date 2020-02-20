@@ -12,7 +12,7 @@ Contact support@sonect.ch if additional info is needed.
 
 e.g. in project build file
 
-```
+```groovy
 allprojects {
     repositories {
     	...
@@ -27,7 +27,7 @@ Latest version of SDK: [![](https://jitpack.io/v/sonect/android-shop-sdk.svg)](h
 
 Add to `build.gradle` of your app
 
-```
+```groovy
 dependencies {
 	...
     implementation ('com.github.sonect:android-shop-sdk:{latestVersion}) {
@@ -42,7 +42,7 @@ dependencies {
 
 To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` is created via `Builder`.
 
-```
+```kotlin
     val builder: SonectSDK.Config.Builder = SonectSDK.Config.Builder()
     val configBuilder = builder
         .enviroment(SonectSDK.Config.Enviroment.DEV) // Prod by default
@@ -80,7 +80,7 @@ If you want to provide your own scanning experience, you could override SDK's sc
 
 You have to override `ScannerFragment` from SDK. It has a `listener` inside which need to be called when scanning performed.
  
-```
+```kotlin
 class CustomScannerFragment: ScannerFragment() { // ScannerFragment from SDK
     override fun getLayoutId(): Int = R.layout.fragment_custom_scanner
 
