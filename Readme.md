@@ -43,7 +43,7 @@ dependencies {
 To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` is created via `Builder`.
 
 ```
-	val builder: SonectSDK.Config.Builder = SonectSDK.Config.Builder()
+    val builder: SonectSDK.Config.Builder = SonectSDK.Config.Builder()
     val configBuilder = builder
         .enviroment(SonectSDK.Config.Enviroment.DEV) // Prod by default
         .userCredentials(
