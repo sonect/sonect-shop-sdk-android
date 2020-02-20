@@ -12,7 +12,7 @@ Contact support@sonect.ch if additional info is needed.
 
 e.g. in project build file
 
-```groovy
+```Gradle
 allprojects {
     repositories {
     	...
@@ -27,7 +27,7 @@ Latest version of SDK: [![](https://jitpack.io/v/sonect/android-shop-sdk.svg)](h
 
 Add to `build.gradle` of your app
 
-```groovy
+```Gradle
 dependencies {
 	...
     implementation ('com.github.sonect:android-shop-sdk:{latestVersion}) {
