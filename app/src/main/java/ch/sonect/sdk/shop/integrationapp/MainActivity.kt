@@ -3,6 +3,7 @@ package ch.sonect.sdk.shop.integrationapp
 import android.os.Bundle
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
+import ch.sonect.sdk.shop.SDKEntryPointActivity
 import ch.sonect.sdk.shop.SonectSDK
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
@@ -11,7 +12,10 @@ import javax.crypto.spec.SecretKeySpec
 class MainActivity : AppCompatActivity() {
 
     // Id should be some value unique and constant for single user
-    var userId = ""
+    var _merchantId = ""
+    var _clientId = ""
+    var _clientSecret = ""
+    var _deviceId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,24 +23,60 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btnStartSdkFragment.setOnClickListener {
-            userId = etUserId.text.toString()
+            _merchantId = etMerchantId.text.toString()
+
+            val signature = calculateSignature(_merchantId)
+
             SdkWrapperActivity.start(
-                this, chkLight.isChecked, userId, chkScandit.isChecked, getTokenSDK(), getSelectedEnviroment()
+                this,
+                chkLight.isChecked,
+                _merchantId,
+                chkScandit.isChecked,
+                getTokenSDK(),
+                getSelectedEnviroment(),
+                signature
             )
         }
 
-        userId = getDefaultUserId()
-        etUserId.setText(userId)
+        _merchantId = getDefaultMerchantId()
+        etMerchantId.setText(_merchantId)
+
+        _clientId = getClientId()
+        etClientId.setText(_clientId)
+
+        _clientSecret = getClientSecret()
+        etClientSecret.setText(_clientSecret)
+
+        _deviceId = "1"
+        etDeviceId.setText(_deviceId)
+
 
         groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
-            userId = getDefaultUserId()
-            etUserId.setText(userId)
+            _merchantId = getDefaultMerchantId()
+            etMerchantId.setText(_merchantId)
+        }
+
+        // Maintain fragment integration at the moment only.
+        btnStartSdkActivity.isEnabled = false
+
+        btnStartSdkActivity.setOnClickListener {
+            // Each integration should have it's own sdk token
+            _merchantId = etMerchantId.text.toString()
+            val signature = calculateSignature(_merchantId)
+            SDKEntryPointActivity.start(
+                this, SonectSDK.Config.UserCredentials(merchantId = _merchantId,
+                    tokenSDK = getTokenSDK(), device_id = _deviceId, signature = signature),
+                isLightMode = chkLight.isChecked, environment = getSelectedEnviroment()
+            )
         }
 
     }
 
     private fun getTokenSDK(): String {
-        return Base64.encodeToString("${getClientId()}:${getClientSecret()}".toByteArray(), Base64.DEFAULT)
+        return Base64.encodeToString(
+            "${_clientId}:${_clientSecret}".toByteArray(),
+            Base64.DEFAULT
+        )
             .replace("\n", "")
     }
 
@@ -56,7 +96,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getDefaultUserId(): String {
+    fun getHmacKey(): String {
+        return when (getSelectedEnviroment()) {
+            SonectSDK.Config.Enviroment.DEV -> "0a4f1c697751b6a3fbf533eeb81752426928acfe202bdd256a76d1a205907d70"
+            SonectSDK.Config.Enviroment.STAGING -> ""
+            SonectSDK.Config.Enviroment.PRODUCTION -> ""
+        }
+    }
+
+    fun getDefaultMerchantId(): String {
         return when (getSelectedEnviroment()) {
             SonectSDK.Config.Enviroment.DEV -> "800801"
             SonectSDK.Config.Enviroment.STAGING -> "A1MrFAOjZ24YQJHexSrlC3yskOOuGS"
@@ -77,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createHmac(data: ByteArray): ByteArray {
-        val keySpec = SecretKeySpec(getClientSecret().toByteArray(), "HmacSHA256")
+        val keySpec = SecretKeySpec(getHmacKey().toByteArray(), "HmacSHA256")
         val mac = Mac.getInstance("HmacSHA256")
         mac.init(keySpec)
 

@@ -1,120 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019. All code present in this project belong to Sonect. All copy and distribution are forbidden. All rights reserved.
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="32dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etUserId"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Client id" />
+        android:layout_margin="32dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Enviroment" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <RadioGroup
-        android:id="@+id/groupEnviroment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMerchantId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Merchant id" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioButton
-            android:id="@+id/chkDev"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etClientId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Client ID" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etClientSecret"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Client secret" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDeviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Device id" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Dev" />
+            android:layout_gravity="start"
+            android:text="Enviroment" />
 
-        <RadioButton
-            android:id="@+id/chkTest"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/groupEnviroment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:enabled="false"
-            android:text="Staging/Test" />
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/chkProd"
-            android:layout_width="0dp"
+            <RadioButton
+                android:id="@+id/chkDev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Dev" />
+
+            <RadioButton
+                android:id="@+id/chkTest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:enabled="false"
+                android:text="Staging/Test" />
+
+            <RadioButton
+                android:id="@+id/chkProd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="Prod" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="Prod" />
-    </RadioGroup>
+            android:layout_gravity="start"
+            android:text="Enviroment" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Enviroment" />
-
-    <RadioGroup
-        android:id="@+id/groupScanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/chkScandit"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/groupScanner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Scandit" />
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/chkOwnScanner"
-            android:layout_width="0dp"
+            <RadioButton
+                android:id="@+id/chkScandit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Scandit" />
+
+            <RadioButton
+                android:id="@+id/chkOwnScanner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Own scanner" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Own scanner" />
-    </RadioGroup>
+            android:layout_gravity="start"
+            android:text="Theme Scheme" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Theme Scheme" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/chkDark"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Dark" />
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/chkLight"
-            android:layout_width="0dp"
+            <RadioButton
+                android:id="@+id/chkDark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Dark" />
+
+            <RadioButton
+                android:id="@+id/chkLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="Light" />
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnStartSdkFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Light" />
-    </RadioGroup>
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Start SDK by Fragment" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnStartSdkFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:text="Start SDK by Fragment" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnStartSdkActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Start SDK by Activity" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

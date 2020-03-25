@@ -92,3 +92,16 @@ class CustomScannerFragment: ScannerFragment() { // ScannerFragment from SDK
     }
 }
 ```
+
+## Proguard / R8
+In case you're using proguard or R8 to obfuscate and optimize your code,
+the following rules should be enough to maintain all expected functionality.
+Please let us know if you find any issues.
+
+```xml
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+```
+
+This is needed to maintain json serialization after proguard.
