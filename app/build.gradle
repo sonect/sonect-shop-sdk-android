@@ -4,6 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.appdistribution'
 
+def getVersionCode = { ->
+    def DEFAULT_CODE = 1
+    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : DEFAULT_CODE
+    println "VersionCode is set to $code"
+    return code
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -11,7 +18,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode getVersionCode()
-        versionName "1.0"
+        versionName "1.0+" + getVersionCode()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
         multiDexEnabled true
