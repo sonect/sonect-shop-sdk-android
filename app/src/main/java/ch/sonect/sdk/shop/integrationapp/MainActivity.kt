@@ -3,7 +3,6 @@ package ch.sonect.sdk.shop.integrationapp
 import android.os.Bundle
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
-import ch.sonect.sdk.shop.SDKEntryPointActivity
 import ch.sonect.sdk.shop.SonectSDK
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
@@ -50,24 +49,9 @@ class MainActivity : AppCompatActivity() {
         _deviceId = "1"
         etDeviceId.setText(_deviceId)
 
-
         groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
             _merchantId = getDefaultMerchantId()
             etMerchantId.setText(_merchantId)
-        }
-
-        // Maintain fragment integration at the moment only.
-        btnStartSdkActivity.isEnabled = false
-
-        btnStartSdkActivity.setOnClickListener {
-            // Each integration should have it's own sdk token
-            _merchantId = etMerchantId.text.toString()
-            val signature = calculateSignature(_merchantId)
-            SDKEntryPointActivity.start(
-                this, SonectSDK.Config.UserCredentials(merchantId = _merchantId,
-                    tokenSDK = getTokenSDK(), device_id = _deviceId, signature = signature),
-                isLightMode = chkLight.isChecked, environment = getSelectedEnviroment()
-            )
         }
 
     }

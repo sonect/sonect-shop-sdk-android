@@ -74,7 +74,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation ('com.github.sonect:android-shop-sdk:1.0.5') {
+    implementation ('com.github.sonect:android-shop-sdk:1.1.0') {
         exclude group: "idenfySdk"
         exclude group: "io.anyline"
     }
