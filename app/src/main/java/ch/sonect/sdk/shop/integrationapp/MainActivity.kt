@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     var _clientId = ""
     var _clientSecret = ""
     var _deviceId = ""
+    var _hmacKey = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         btnStartSdkFragment.setOnClickListener {
             _merchantId = etMerchantId.text.toString()
+            _clientId = etClientId.text.toString()
+            _clientSecret = etClientSecret.text.toString()
+            _deviceId = etDeviceId.text.toString()
+            _hmacKey = etHmacKey.text.toString()
 
             val signature = calculateSignature(_merchantId)
 
@@ -49,9 +54,24 @@ class MainActivity : AppCompatActivity() {
         _deviceId = "1"
         etDeviceId.setText(_deviceId)
 
+        _hmacKey = getHmacKey()
+        etHmacKey.setText(_hmacKey)
+
         groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
             _merchantId = getDefaultMerchantId()
             etMerchantId.setText(_merchantId)
+
+            _clientId = getClientId()
+            etClientId.setText(_clientId)
+
+            _clientSecret = getClientSecret()
+            etClientSecret.setText(_clientSecret)
+
+            _deviceId = "1"
+            etDeviceId.setText(_deviceId)
+
+            _hmacKey = getHmacKey()
+            etHmacKey.setText(_hmacKey)
         }
 
     }
@@ -104,12 +124,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateSignature(uid: String): String {
-        val hmacString = "${getClientId()}:$packageName:$uid"
+        val hmacString = "${_clientId}:$packageName:$uid"
         return Base64.encodeToString(createHmac(hmacString.toByteArray()), Base64.DEFAULT).trim()
     }
 
     fun createHmac(data: ByteArray): ByteArray {
-        val keySpec = SecretKeySpec(getHmacKey().toByteArray(), "HmacSHA256")
+        val keySpec = SecretKeySpec(_hmacKey.toByteArray(), "HmacSHA256")
         val mac = Mac.getInstance("HmacSHA256")
         mac.init(keySpec)
 
