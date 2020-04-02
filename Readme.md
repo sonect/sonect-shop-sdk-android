@@ -21,6 +21,18 @@ allprojects {
 }
 ```
 
+Also if you need to have iDenfy as a KYC provider and Anyline as a IBAN scanner inside SDK you should provide repositories as well:
+
+ ```Gradle
+ allprojects {
+     repositories {
+     	...
+        maven { url 'https://anylinesdk.blob.core.windows.net/maven/' }
+        maven { url "https://dl.bintray.com/idenfy/idenfy" }
+     }
+ }
+ ```
+
 ### Add dependency to the SDK
 
 Latest version of SDK: [![](https://jitpack.io/v/sonect/android-shop-sdk.svg)](https://jitpack.io/#sonect/android-shop-sdk)
@@ -31,9 +43,23 @@ Add to `build.gradle` of your app
 dependencies {
 	...
     implementation ('com.github.sonect:android-shop-sdk:{latestVersion}) {
-        exclude group: "idenfySdk"
-        exclude group: "io.anyline"
+        transitive true
     }
+    ...
+}
+```
+
+If you need iDenfy and Anyline also include their dependencies:
+
+```Gradle
+dependencies {
+	...
+    //Idenfy
+    implementation 'idenfySdk:com.idenfy.idenfySdk:1.2.0.6'
+    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:1.2.0.6'
+
+    // Anyline
+    implementation 'io.anyline:anylinesdk:14@aar'
     ...
 }
 ```
