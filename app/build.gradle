@@ -27,6 +27,8 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+
+        missingDimensionStrategy 'sdkDependency', 'external'
     }
 
     signingConfigs {
@@ -58,6 +60,17 @@ android {
             signingConfig signingConfigs.customDebug
         }
     }
+
+    flavorDimensions("sdkDependency")
+    productFlavors {
+        external {
+            dimension = "sdkDependency"
+        }
+
+        internal {
+            dimension = "sdkDependency"
+        }
+    }
 }
 
 buildscript {
@@ -74,10 +87,13 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation ('com.github.sonect:android-shop-sdk:1.1.0') {
+    externalImplementation ('com.github.sonect:android-shop-sdk:1.1.0') {
         exclude group: "idenfySdk"
         exclude group: "io.anyline"
     }
+
+    // For Sonect internal usage and direct dependency to source code
+    internalImplementation project(path: ':sdk')
 }
 
 apply plugin: 'com.google.gms.google-services'
