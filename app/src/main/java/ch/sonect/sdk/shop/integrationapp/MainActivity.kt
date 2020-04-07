@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
                 chkScandit.isChecked,
                 getTokenSDK(),
                 getSelectedEnviroment(),
-                signature
+                signature,
+                if (_deviceId.isBlank()) null else _deviceId
             )
         }
 
@@ -50,9 +51,6 @@ class MainActivity : AppCompatActivity() {
 
         _clientSecret = getClientSecret()
         etClientSecret.setText(_clientSecret)
-
-        _deviceId = "1"
-        etDeviceId.setText(_deviceId)
 
         _hmacKey = getHmacKey()
         etHmacKey.setText(_hmacKey)
@@ -66,9 +64,6 @@ class MainActivity : AppCompatActivity() {
 
             _clientSecret = getClientSecret()
             etClientSecret.setText(_clientSecret)
-
-            _deviceId = "1"
-            etDeviceId.setText(_deviceId)
 
             _hmacKey = getHmacKey()
             etHmacKey.setText(_hmacKey)
