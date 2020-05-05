@@ -55,8 +55,8 @@ If you need iDenfy and Anyline also include their dependencies:
 dependencies {
 	...
     //Idenfy
-    implementation 'idenfySdk:com.idenfy.idenfySdk:1.2.0.6'
-    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:1.2.0.6'
+    implementation 'idenfySdk:com.idenfy.idenfySdk:1.3.0'
+    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:1.3.0'
 
     // Anyline
     implementation 'io.anyline:anylinesdk:14@aar'
