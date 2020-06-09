@@ -59,10 +59,6 @@ class SdkWrapperActivity : AppCompatActivity() {
                 )
             )
             .sdkCallbacks(object : SdkActionsCallback {
-                override fun setLockingScreen(code: String) {
-                    //ignore
-                }
-
                 override fun onSdkLastFragmentClosed() {
                     finish()
                 }
