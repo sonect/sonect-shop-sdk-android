@@ -86,7 +86,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
 
-    externalImplementation ('com.github.sonect:android-shop-sdk:1.2.0@aar') {
+    externalImplementation ('com.github.sonect:android-shop-sdk:1.2.1@aar') {
         transitive = true
     }
 
