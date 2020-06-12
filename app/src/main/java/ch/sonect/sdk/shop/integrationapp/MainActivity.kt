@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 getTokenSDK(),
                 getSelectedEnviroment(),
                 signature,
+                etCountry.text.toString(),
                 if (_deviceId.isBlank()) null else _deviceId
             )
         }
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getClientId(): String {
         return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "5c323120-5027-11e8-ad3f-7be7c251fc61"
+            SonectSDK.Config.Enviroment.DEV -> "4b0b1580-799f-11ea-b9fa-8798a68c4d2d"
             SonectSDK.Config.Enviroment.STAGING -> "08828a10-bdaf-11e9-be4c-5db5328cafa4"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getClientSecret(): String {
         return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "b64407b409abbc4269771cbd1f7c28dbd498270defff3a606f5f4f2d27a4e07a"
+            SonectSDK.Config.Enviroment.DEV -> "baeb244bd98c8eebf19ab26740f00ac4169dc762710951a196ccc020e1c0e39a"
             SonectSDK.Config.Enviroment.STAGING -> "c999d5adab9b065b166bce6e58b84050349088ab8e7948248088068c7c534f60"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getHmacKey(): String {
         return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "0a4f1c697751b6a3fbf533eeb81752426928acfe202bdd256a76d1a205907d70"
+            SonectSDK.Config.Enviroment.DEV -> "c313287948eb5a6134e31493d1620855ad21ac65337aca2aa640eb71ddb925e7"
             SonectSDK.Config.Enviroment.STAGING -> ""
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
