@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     fun getClientId(): String {
         return when (getSelectedEnviroment()) {
             SonectSDK.Config.Enviroment.DEV -> "4b0b1580-799f-11ea-b9fa-8798a68c4d2d"
-            SonectSDK.Config.Enviroment.STAGING -> "08828a10-bdaf-11e9-be4c-5db5328cafa4"
+            SonectSDK.Config.Enviroment.STAGING -> "90061030-a637-11ea-b19e-2b0ec3d9e2c7"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
     }
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     fun getClientSecret(): String {
         return when (getSelectedEnviroment()) {
             SonectSDK.Config.Enviroment.DEV -> "baeb244bd98c8eebf19ab26740f00ac4169dc762710951a196ccc020e1c0e39a"
-            SonectSDK.Config.Enviroment.STAGING -> "c999d5adab9b065b166bce6e58b84050349088ab8e7948248088068c7c534f60"
+            SonectSDK.Config.Enviroment.STAGING -> "10918d789ea3d3e233e3b2227a10ef91406ee0bad6104114ffba4e885189b4ef"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
     }
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     fun getHmacKey(): String {
         return when (getSelectedEnviroment()) {
             SonectSDK.Config.Enviroment.DEV -> "c313287948eb5a6134e31493d1620855ad21ac65337aca2aa640eb71ddb925e7"
-            SonectSDK.Config.Enviroment.STAGING -> ""
+            SonectSDK.Config.Enviroment.STAGING -> "7e1829239a9bd90bb4e3453b0a271629046f2448e36e6c7121c97f0acea9874f"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
     }
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     fun getDefaultMerchantId(): String {
         return when (getSelectedEnviroment()) {
             SonectSDK.Config.Enviroment.DEV -> "800801"
-            SonectSDK.Config.Enviroment.STAGING -> "A1MrFAOjZ24YQJHexSrlC3yskOOuGS"
+            SonectSDK.Config.Enviroment.STAGING -> "800801"
             SonectSDK.Config.Enviroment.PRODUCTION -> ""
         }
     }
