@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
                 getTokenSDK(),
                 getSelectedEnviroment(),
                 signature,
-                etCountry.text.toString(),
                 if (_deviceId.isBlank()) null else _deviceId
             )
         }
