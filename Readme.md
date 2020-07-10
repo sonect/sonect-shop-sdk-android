@@ -123,7 +123,7 @@ class CustomScannerFragment: ScannerFragment() { // ScannerFragment from SDK
 
 In order to give info about shop `SonectSDK` has method in builder
 
-```
+```kotlin
 fun shop(shop: Shop) = apply {
     this.shop = shop
 }
