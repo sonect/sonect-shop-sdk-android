@@ -105,7 +105,7 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
 If you want to provide your own scanning experience, you could override SDK's scanner (Scandit).
 
 You have to override `ScannerFragment` from SDK. It has a `listener` inside which need to be called when scanning performed.
- 
+
 ```kotlin
 class CustomScannerFragment: ScannerFragment() { // ScannerFragment from SDK
     override fun getLayoutId(): Int = R.layout.fragment_custom_scanner
@@ -119,7 +119,22 @@ class CustomScannerFragment: ScannerFragment() { // ScannerFragment from SDK
 }
 ```
 
+### Provide shop info from outer app
+
+In order to give info about shop `SonectSDK` has method in builder
+
+```
+fun shop(shop: Shop) = apply {
+    this.shop = shop
+}
+```
+
+`Shop` class has a `Builder` inside which let define Shop field by field.
+
+Provided `Shop` will prefill data during the user onboarding. 
+
 ## Proguard / R8
+
 In case you're using proguard or R8 to obfuscate and optimize your code,
 the following rules should be enough to maintain all expected functionality.
 Please let us know if you find any issues.
