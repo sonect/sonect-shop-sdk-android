@@ -131,7 +131,21 @@ fun shop(shop: Shop) = apply {
 
 `Shop` class has a `Builder` inside which let define Shop field by field.
 
-Provided `Shop` will prefill data during the user onboarding. 
+Provided `Shop` will prefill data during the user onboarding.
+
+### Provide beneficiary info from outer app
+
+In order to give info about beneficiary `SonectSDK` has method in builder
+
+```kotlin
+fun beneficiary(beneficiary: Beneficiary) = apply {
+    this.beneficiary = beneficiary
+}
+```
+
+`Beneficiary` class has a `Builder` inside which let define Beneficiary field by field.
+
+Provided `Beneficiary` will prefill data during the user onboarding.
 
 ## Proguard / R8
 
