@@ -1,2 +1,6 @@
-include ':app'
-rootProject.name='Sonect integrationsample'
+include ':sample', ':sdk-shop', ':sdk-common', ':sdk-data', ':sdk-domain'
+
+project(':sdk-shop').projectDir = file("sdk/sdk-shop")
+project(':sdk-common').projectDir = file("sdk/sdk-common")
+project(':sdk-domain').projectDir = file("sdk/sdk-domain")
+project(':sdk-data').projectDir = file("sdk/sdk-data")

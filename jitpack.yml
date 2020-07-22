@@ -1,0 +1,6 @@
+before_install:
+  - echo "Download translations Build Step"
+  - ./gradlew sdk-shop:downloadTranslationsForSdk
+install:
+  - echo "Build shop SDK"
+  - ./gradlew sdk-shop:publishToMavenLocal

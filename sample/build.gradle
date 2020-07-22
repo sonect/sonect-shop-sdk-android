@@ -94,9 +94,12 @@ dependencies {
     }
 
     // For Sonect internal usage and direct dependency to source code
-//    internalImplementation project(path: ':sdk')
+    internalImplementation project(path: ':sdk-shop')
+    internalImplementation project(path: ':sdk-common')
+    internalImplementation project(path: ':sdk-data')
+    internalImplementation project(path: ':sdk-domain')
 
-//    Idenfy
+    // Idenfy
     implementation 'idenfySdk:com.idenfy.idenfySdk:2.2.1'
     implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.2.1'
 
