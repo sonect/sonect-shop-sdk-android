@@ -42,9 +42,7 @@ Add to `build.gradle` of your app
 ```Gradle
 dependencies {
 	...
-    implementation ('com.github.sonect:android-shop-sdk:{latestVersion}) {
-        transitive true
-    }
+    implementation ("com.github.sonect:android-shop-sdk:{latestVersion}")
     ...
 }
 ```
