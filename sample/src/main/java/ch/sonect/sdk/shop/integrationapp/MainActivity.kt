@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
+            sharedPreferences.clear()
             if (chkDev.isChecked) sharedPreferences.envKey = "DEV"
             if (chkTest.isChecked) sharedPreferences.envKey = "TEST"
             if (chkProd.isChecked) sharedPreferences.envKey = "PROD"
