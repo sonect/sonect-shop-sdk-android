@@ -1,14 +1,21 @@
 package ch.sonect.sdk.shop.integrationapp
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Base64
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import ch.sonect.common.extension.afterTextChanged
 import ch.sonect.sdk.shop.SonectSDK
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var sharedPreferences: CacheManager
 
     // Id should be some value unique and constant for single user
     var _merchantId = ""
@@ -21,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
+        sharedPreferences = CacheManager(applicationContext)
 
         btnStartSdkFragment.setOnClickListener {
             _merchantId = etMerchantId.text.toString()
@@ -45,30 +54,53 @@ class MainActivity : AppCompatActivity() {
 
         _merchantId = getDefaultMerchantId()
         etMerchantId.setText(_merchantId)
+        etMerchantId.addTextChangedListener(afterTextChanged {
+            sharedPreferences.merchantId = it.toString()
+        })
 
         _clientId = getClientId()
         etClientId.setText(_clientId)
+        etClientId.addTextChangedListener(afterTextChanged {
+            sharedPreferences.clientId = it.toString()
+        })
 
         _clientSecret = getClientSecret()
         etClientSecret.setText(_clientSecret)
+        etClientSecret.addTextChangedListener(afterTextChanged {
+            sharedPreferences.clientSecret = it.toString()
+        })
 
         _hmacKey = getHmacKey()
         etHmacKey.setText(_hmacKey)
+        etHmacKey.addTextChangedListener(afterTextChanged {
+            sharedPreferences.hmacKey = it.toString()
+        })
 
-        groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
-            _merchantId = getDefaultMerchantId()
-            etMerchantId.setText(_merchantId)
+        _deviceId = getDeviceId()
+        etDeviceId.setText(_deviceId)
+        etDeviceId.addTextChangedListener(afterTextChanged {
+            sharedPreferences.deviceId = it.toString()
+        })
 
-            _clientId = getClientId()
-            etClientId.setText(_clientId)
-
-            _clientSecret = getClientSecret()
-            etClientSecret.setText(_clientSecret)
-
-            _hmacKey = getHmacKey()
-            etHmacKey.setText(_hmacKey)
+        when (sharedPreferences.envKey) {
+            "DEV" -> chkDev.isChecked = true
+            "TEST" -> chkTest.isChecked = true
+            "PROD" -> chkProd.isChecked = true
         }
 
+        groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
+            if (chkDev.isChecked) sharedPreferences.envKey = "DEV"
+            if (chkTest.isChecked) sharedPreferences.envKey = "TEST"
+            if (chkProd.isChecked) sharedPreferences.envKey = "PROD"
+        }
+
+        copyAction.setOnClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("test info", sharedPreferences.copiedInfo())
+            clipboard.primaryClip = clip
+            Toast.makeText(applicationContext, "Info copied to clipboard!", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun getTokenSDK(): String {
@@ -79,43 +111,33 @@ class MainActivity : AppCompatActivity() {
             .replace("\n", "")
     }
 
-    fun getClientId(): String {
-        return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "4b0b1580-799f-11ea-b9fa-8798a68c4d2d"
-            SonectSDK.Config.Enviroment.STAGING -> "50c4f5f0-b229-11ea-bad4-f923de7877da"
-            SonectSDK.Config.Enviroment.PRODUCTION -> ""
-        }
+    private fun getClientId(): String {
+        return sharedPreferences.clientId ?: ""
     }
 
-    fun getClientSecret(): String {
-        return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "baeb244bd98c8eebf19ab26740f00ac4169dc762710951a196ccc020e1c0e39a"
-            SonectSDK.Config.Enviroment.STAGING -> "e22800bd1495f833fef842382951affb98557e6424748810562fcae0a96ecc76"
-            SonectSDK.Config.Enviroment.PRODUCTION -> ""
-        }
+    private fun getClientSecret(): String {
+        return sharedPreferences.clientSecret ?: ""
     }
 
-    fun getHmacKey(): String {
-        return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "c313287948eb5a6134e31493d1620855ad21ac65337aca2aa640eb71ddb925e7"
-            SonectSDK.Config.Enviroment.STAGING -> "5da1baaca50bc1cde69eac15a4b29d745ec3ff0567f8fcbe15c512050a6cec6e"
-            SonectSDK.Config.Enviroment.PRODUCTION -> ""
-        }
+    private fun getHmacKey(): String {
+        return sharedPreferences.hmacKey ?: ""
     }
 
-    fun getDefaultMerchantId(): String {
-        return when (getSelectedEnviroment()) {
-            SonectSDK.Config.Enviroment.DEV -> "800801"
-            SonectSDK.Config.Enviroment.STAGING -> "panella007"
-            SonectSDK.Config.Enviroment.PRODUCTION -> ""
-        }
+    private fun getDefaultMerchantId(): String {
+        return sharedPreferences.merchantId ?: ""
+    }
+
+    private fun getDeviceId(): String {
+        return sharedPreferences.deviceId ?: ""
     }
 
     private fun getSelectedEnviroment(): SonectSDK.Config.Enviroment {
-        if (chkDev.isChecked) return SonectSDK.Config.Enviroment.DEV
-        if (chkTest.isChecked) return SonectSDK.Config.Enviroment.STAGING
-        if (chkProd.isChecked) return SonectSDK.Config.Enviroment.PRODUCTION
-        throw IllegalStateException("Environment have not been selected yet")
+        when (sharedPreferences.envKey) {
+            "DEV" -> return SonectSDK.Config.Enviroment.DEV
+            "TEST" -> return SonectSDK.Config.Enviroment.STAGING
+            "PROD" -> return SonectSDK.Config.Enviroment.PRODUCTION
+            else -> throw IllegalStateException("Environment have not been selected yet")
+        }
     }
 
     private fun calculateSignature(uid: String): String {
