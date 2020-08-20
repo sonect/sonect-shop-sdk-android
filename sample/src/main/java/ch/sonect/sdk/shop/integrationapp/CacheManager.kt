@@ -2,6 +2,13 @@ package ch.sonect.sdk.shop.integrationapp
 
 import android.content.Context
 
+private const val MERCHANT_ID = "merchantid"
+private const val CLIENT_ID = "clientid"
+private const val CLIENT_SECRET = "clientsecret"
+private const val DEVICE_ID = "deviceid"
+private const val HMAC_KEY = "hmac"
+private const val ENV_KEY = "envKey"
+
 class CacheManager(context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences("shopsample", Context.MODE_PRIVATE)
@@ -34,14 +41,4 @@ class CacheManager(context: Context) {
         return "MerchantId: $merchantId\nClientId: $clientId\nClient Secret: $clientSecret\n" +
                 "Hmac: $hmacKey\nDeviceId: $deviceId\nEnvironment: $envKey"
     }
-
-    companion object{
-        private const val MERCHANT_ID = "merchantid"
-        private const val CLIENT_ID = "clientid"
-        private const val CLIENT_SECRET = "clientsecret"
-        private const val DEVICE_ID = "deviceid"
-        private const val HMAC_KEY = "hmac"
-        private const val ENV_KEY = "envKey"
-    }
-
 }

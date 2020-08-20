@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var sharedPreferences: CacheManager
+    private val sharedPreferences by lazy { CacheManager(this) }
 
     // Id should be some value unique and constant for single user
     var _merchantId = ""
@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
-        sharedPreferences = CacheManager(applicationContext)
 
         btnStartSdkFragment.setOnClickListener {
             _merchantId = etMerchantId.text.toString()
