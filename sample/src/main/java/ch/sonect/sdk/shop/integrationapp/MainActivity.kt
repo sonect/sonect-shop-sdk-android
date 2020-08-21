@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         if (chkDev.isChecked) return SonectSDK.Config.Enviroment.DEV
         if (chkTest.isChecked) return SonectSDK.Config.Enviroment.STAGING
         if (chkProd.isChecked) return SonectSDK.Config.Enviroment.PRODUCTION
-        throw IllegalStateException("Environment have not been selected yet")
+        return SonectSDK.Config.Enviroment.DEV
     }
 
     private fun calculateSignature(uid: String): String {
