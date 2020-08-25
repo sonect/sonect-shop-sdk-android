@@ -155,6 +155,7 @@ Please let us know if you find any issues.
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
+-keepnames class androidx.navigation.fragment.NavHostFragment
 ```
 
 This is needed to maintain json serialization after proguard.
