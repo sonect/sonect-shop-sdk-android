@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/CustomAppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name="ch.sonect.sdk.shop.integrationapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
