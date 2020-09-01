@@ -1,4 +1,4 @@
-package ch.sonect.sdk.shop.integrationapp
+package ch.sonect.sdk.shop.integrationapp.data
 
 import android.content.Context
 import ch.sonect.sdk.shop.BuildConfig
@@ -35,15 +35,11 @@ class CacheManager(context: Context) {
         set(value) = sharedPreferences.edit().putString(HMAC_KEY, value).apply()
 
     var envKey: String?
-        get() = sharedPreferences.getString(ENV_KEY, "DEV")
+        get() = sharedPreferences.getString(ENV_KEY, null)
         set(value) = sharedPreferences.edit().putString(ENV_KEY, value).apply()
 
     fun copiedInfo(): String? {
         return "MerchantId: $merchantId\nClientId: $clientId\nClient Secret: $clientSecret\n" +
                 "Hmac: $hmacKey\nDeviceId: $deviceId\nEnvironment: $envKey\nApp version:${BuildConfig.VERSION_NAME}"
-    }
-
-    fun clear() {
-        sharedPreferences.edit().clear().apply()
     }
 }

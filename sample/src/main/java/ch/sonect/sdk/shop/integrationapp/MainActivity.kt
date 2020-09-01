@@ -2,27 +2,25 @@ package ch.sonect.sdk.shop.integrationapp
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.os.Bundle
 import android.util.Base64
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
+import androidx.lifecycle.Observer
 import ch.sonect.common.extension.afterTextChanged
 import ch.sonect.sdk.shop.SonectSDK
+import ch.sonect.sdk.shop.integrationapp.data.TestInfo
+import ch.sonect.sdk.shop.integrationapp.repository.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : AppCompatActivity() {
 
-    private val sharedPreferences by lazy { CacheManager(this) }
-
-    // Id should be some value unique and constant for single user
-    var _merchantId = ""
-    var _clientId = ""
-    var _clientSecret = ""
-    var _deviceId = ""
-    var _hmacKey = ""
+    private val viewModel by viewModels<MainActivityViewModel>()
+    private lateinit var testInfo: TestInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,126 +28,102 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btnStartSdkFragment.setOnClickListener {
-            _merchantId = etMerchantId.text.toString()
-            _clientId = etClientId.text.toString()
-            _clientSecret = etClientSecret.text.toString()
-            _deviceId = etDeviceId.text.toString()
-            _hmacKey = etHmacKey.text.toString()
-
-            val signature = calculateSignature(_merchantId)
+            val signature = calculateSignature(testInfo.merchantId.orEmpty())
+            viewModel.saveCurrentInfo(testInfo)
 
             SdkWrapperActivity.start(
                 this,
                 chkLight.isChecked,
-                _merchantId,
+                testInfo.merchantId.orEmpty(),
                 chkScandit.isChecked,
                 getTokenSDK(),
-                getSelectedEnviroment(),
+                testInfo.envKey,
                 signature,
-                if (_deviceId.isBlank()) null else _deviceId
+                if (testInfo.merchantId.isNullOrBlank()) null else testInfo.merchantId
             )
         }
 
-        _merchantId = getDefaultMerchantId()
-        etMerchantId.setText(_merchantId)
+        initObservers()
+        viewModel.setContext(applicationContext)
+
         etMerchantId.addTextChangedListener(afterTextChanged {
-            sharedPreferences.merchantId = it.toString()
+            testInfo.merchantId = it.toString()
         })
 
-        _clientId = getClientId()
-        etClientId.setText(_clientId)
         etClientId.addTextChangedListener(afterTextChanged {
-            sharedPreferences.clientId = it.toString()
+            testInfo.clientId = it.toString()
         })
 
-        _clientSecret = getClientSecret()
-        etClientSecret.setText(_clientSecret)
         etClientSecret.addTextChangedListener(afterTextChanged {
-            sharedPreferences.clientSecret = it.toString()
+            testInfo.clientSecret = it.toString()
         })
 
-        _hmacKey = getHmacKey()
-        etHmacKey.setText(_hmacKey)
         etHmacKey.addTextChangedListener(afterTextChanged {
-            sharedPreferences.hmacKey = it.toString()
+            testInfo.hmacKey = it.toString()
         })
 
-        _deviceId = getDeviceId()
-        etDeviceId.setText(_deviceId)
         etDeviceId.addTextChangedListener(afterTextChanged {
-            sharedPreferences.deviceId = it.toString()
+            testInfo.deviceId = it.toString()
         })
 
-        when (sharedPreferences.envKey) {
-            "DEV" -> chkDev.isChecked = true
-            "TEST" -> chkTest.isChecked = true
-            "PROD" -> chkProd.isChecked = true
-        }
-
-        groupEnviroment.setOnCheckedChangeListener { group, checkedId ->
-            sharedPreferences.clear()
-            if (chkDev.isChecked) sharedPreferences.envKey = "DEV"
-            if (chkTest.isChecked) sharedPreferences.envKey = "TEST"
-            if (chkProd.isChecked) sharedPreferences.envKey = "PROD"
+        groupEnviroment.setOnCheckedChangeListener { group, _ ->
+            when (group.checkedRadioButtonId) {
+                R.id.chkDev -> viewModel.getDefaults(SonectSDK.Config.Enviroment.DEV)
+                R.id.chkTest -> viewModel.getDefaults(SonectSDK.Config.Enviroment.STAGING)
+                R.id.chkProd -> viewModel.getDefaults(SonectSDK.Config.Enviroment.PRODUCTION)
+            }
         }
 
         copyAction.setOnClickListener {
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("test info", sharedPreferences.copiedInfo())
-            clipboard.primaryClip = clip
+            val clipboard = getSystemService<ClipboardManager>()
+            val clip = ClipData.newPlainText("test info", viewModel.infoToClipBoard())
+            clipboard?.primaryClip = clip
             Toast.makeText(applicationContext, "Info copied to clipboard!", Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
-    private fun getTokenSDK(): String {
-        return Base64.encodeToString(
-            "${_clientId}:${_clientSecret}".toByteArray(),
-            Base64.DEFAULT
-        )
-            .replace("\n", "")
+    private fun initObservers() {
+        viewModel.currentInfo.observe(this, Observer {
+            settingFields(it)
+        })
+
+        viewModel.defaultEnv.observe(this, Observer {
+            settingFields(it)
+        })
     }
 
-    private fun getClientId(): String {
-        return sharedPreferences.clientId ?: ""
-    }
+    private fun settingFields(it: TestInfo) {
+        testInfo = it
+        etMerchantId.setText(it.merchantId)
+        etClientId.setText(it.clientId)
+        etClientSecret.setText(it.clientSecret)
+        etHmacKey.setText(it.hmacKey)
+        etDeviceId.setText(it.deviceId)
 
-    private fun getClientSecret(): String {
-        return sharedPreferences.clientSecret ?: ""
-    }
-
-    private fun getHmacKey(): String {
-        return sharedPreferences.hmacKey ?: ""
-    }
-
-    private fun getDefaultMerchantId(): String {
-        return sharedPreferences.merchantId ?: ""
-    }
-
-    private fun getDeviceId(): String {
-        return sharedPreferences.deviceId ?: ""
-    }
-
-    private fun getSelectedEnviroment(): SonectSDK.Config.Enviroment {
-        when (sharedPreferences.envKey) {
-            "DEV" -> return SonectSDK.Config.Enviroment.DEV
-            "TEST" -> return SonectSDK.Config.Enviroment.STAGING
-            "PROD" -> return SonectSDK.Config.Enviroment.PRODUCTION
-            else -> throw IllegalStateException("Environment have not been selected yet")
+        when (it.envKey) {
+            SonectSDK.Config.Enviroment.DEV -> chkDev.isChecked = true
+            SonectSDK.Config.Enviroment.STAGING -> chkTest.isChecked = true
+            SonectSDK.Config.Enviroment.PRODUCTION -> chkProd.isChecked = true
         }
     }
 
+    private fun getTokenSDK(): String {
+        return Base64.encodeToString(
+            "${testInfo.clientId}:${testInfo.clientSecret}".toByteArray(), Base64.DEFAULT
+        ).replace("\n", "")
+    }
+
     private fun calculateSignature(uid: String): String {
-        val hmacString = "${_clientId}:$packageName:$uid"
+        val hmacString = "${testInfo.clientId}:$packageName:$uid"
         return Base64.encodeToString(createHmac(hmacString.toByteArray()), Base64.DEFAULT).trim()
     }
 
     fun createHmac(data: ByteArray): ByteArray {
-        val keySpec = SecretKeySpec(_hmacKey.toByteArray(), "HmacSHA256")
+        val keySpec = SecretKeySpec(testInfo.hmacKey?.toByteArray(), "HmacSHA256")
         val mac = Mac.getInstance("HmacSHA256")
         mac.init(keySpec)
 
-        val hmac = mac.doFinal(data)
-        return hmac
+        return mac.doFinal(data)
     }
 }
