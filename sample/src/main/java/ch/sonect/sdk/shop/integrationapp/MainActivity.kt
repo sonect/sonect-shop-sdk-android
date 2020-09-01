@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import ch.sonect.common.extension.afterTextChanged
 import ch.sonect.sdk.shop.SonectSDK
 import ch.sonect.sdk.shop.integrationapp.data.TestInfo
-import ch.sonect.sdk.shop.integrationapp.repository.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec

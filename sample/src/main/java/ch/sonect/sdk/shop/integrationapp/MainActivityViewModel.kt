@@ -1,4 +1,4 @@
-package ch.sonect.sdk.shop.integrationapp.repository
+package ch.sonect.sdk.shop.integrationapp
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import ch.sonect.sdk.shop.SonectSDK
 import ch.sonect.sdk.shop.integrationapp.data.CacheManager
 import ch.sonect.sdk.shop.integrationapp.data.TestInfo
+import ch.sonect.sdk.shop.integrationapp.repository.TestingRepository
 import com.hadilq.liveevent.LiveEvent
 
 class MainActivityViewModel : ViewModel() {
@@ -42,7 +43,10 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun setContext(applicationContext: Context) {
-        testingRepository = TestingRepository(CacheManager(applicationContext))
+        testingRepository =
+            TestingRepository(
+                CacheManager(applicationContext)
+            )
         getLastUsedInfo()
     }
 
