@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import ch.sonect.sdk.shop.ActivityResultHandlingFragment
 import ch.sonect.sdk.shop.EntryPointFragment
 import ch.sonect.sdk.shop.SdkActionsCallback
 import ch.sonect.sdk.shop.SonectSDK
@@ -104,14 +103,8 @@ class SdkWrapperActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
+        topFragment?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-        for (fragment in supportFragmentManager.fragments) {
-            if (fragment is ActivityResultHandlingFragment) {
-                fragment.onHostedActivityResult(requestCode, resultCode, data)
-            } else {
-                fragment?.onActivityResult(requestCode, resultCode, data)
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-        }
     }
 }
