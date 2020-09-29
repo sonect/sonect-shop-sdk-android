@@ -5,11 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import ch.sonect.common.navigation.ActivityResult
+import ch.sonect.common.navigation.ActivityResultStorage
 import ch.sonect.sdk.shop.EntryPointFragment
 import ch.sonect.sdk.shop.SdkActionsCallback
 import ch.sonect.sdk.shop.SonectSDK
 
-class SdkWrapperActivity : AppCompatActivity() {
+class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
+
+    private val pendingResults = mutableMapOf<Int, ActivityResult>()
 
     companion object {
         const val LM = "lm"
@@ -102,9 +106,14 @@ class SdkWrapperActivity : AppCompatActivity() {
         }
     }
 
+    override fun getPendingResult(requestCode: Int) = pendingResults.remove(requestCode)
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        pendingResults[requestCode] = ActivityResult(resultCode, data)
+
         val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
         topFragment?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
     }
+    
 }
