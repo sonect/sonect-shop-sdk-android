@@ -133,14 +133,18 @@ class MyAwesomeActivity : AppCompatActivity(), ActivityResultStorage {
   override fun getPendingResult(requestCode: Int) = pendingResults.remove(requestCode)
   ...
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Save current result into pending results with proper requestCode
-        pendingResults[requestCode] = ActivityResult(resultCode, data)
+        if (couldHanldeByYourself == true) {
+          
+        } else {
+           // Save current result into pending results with proper requestCode
+          pendingResults[requestCode] = ActivityResult(resultCode, data)
 
-        val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
-        // Here we call system's onActivityResult method, won't harm any other fragments.
-        // Inside SDK we'll call for getPendingResult and handle result by SDK.
-        topFragment?.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
+          val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
+          // Here we call system's onActivityResult method, won't harm any other fragments.
+          // Inside SDK we'll call for getPendingResult and handle result by SDK.
+          topFragment?.onActivityResult(requestCode, resultCode, data)
+          super.onActivityResult(requestCode, resultCode, data) 
+        }
     }
   ...
 }
