@@ -89,13 +89,65 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
         configBuilder.customScannerFragment(CustomScannerFragment()) // Provide scanner fragment
     }
 
-    
     val config = configBuilder.build()
     val sonectSDK = SonectSDK(this, config)
 
     supportFragmentManager.beginTransaction()
         .replace(R.id.container, sonectSDK.getStartFragment()) // Start SDK fragment
         .addToBackStack(null).commit()
+```
+
+### Provide system event from outer app
+
+#### Provide back event into SDK
+
+Whole sdk is built on fragments and in order to handle navigation stack properly BackPress event should be provided by wrapping `Activity`.
+
+```kotlin
+override fun onBackPressed() {
+   var backIsHandled = false
+   for (fragment in supportFragmentManager.fragments) {
+       if ((fragment as? EntryPointFragment)?.handleBack() == true) {
+           // Handle back by ourselves, SDK won't handle it anymore
+           backIsHandled = true
+       }
+   }
+   if (!backIsHandled) {
+       super.onBackPressed()
+   }
+}
+```
+
+
+
+#### Provide Activity result into SDK
+
+Sdk have an interface `ActivityResultStorage` with one method `getPendingResult`. `Activity` in which you integrate Shop SDK have to implement this interface and return peding result for the request code. It is needed to support proper navigation in case of `iDenfy` for KYC inside SDK.
+
+Possible simple implementation of the approach:
+
+```kotlin
+class MyAwesomeActivity : AppCompatActivity(), ActivityResultStorage {
+  private val pendingResults = mutableMapOf<Int, ActivityResult>()
+  ...
+  override fun getPendingResult(requestCode: Int) = pendingResults.remove(requestCode)
+  ...
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (couldHanldeByYourself == true) {
+          
+        } else {
+           // Save current result into pending results with proper requestCode
+          pendingResults[requestCode] = ActivityResult(resultCode, data)
+
+          val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
+          // Here we call system's onActivityResult method, won't harm any other fragments.
+          // Inside SDK we'll call for getPendingResult and handle result by SDK.
+          topFragment?.onActivityResult(requestCode, resultCode, data)
+          super.onActivityResult(requestCode, resultCode, data) 
+        }
+    }
+  ...
+}
 ```
 
 ### Custom barcode scanner 
