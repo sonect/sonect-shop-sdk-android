@@ -1,6 +1,7 @@
-include ':sample', ':sdk-shop', ':sdk-common', ':sdk-data', ':sdk-domain'
+include ':sample', ':sdk-shop', ':sdk-common', ':sdk-data', ':sdk-domain', ':okhttp'
 
 project(':sdk-shop').projectDir = file("sdk/sdk-shop")
 project(':sdk-common').projectDir = file("sdk/sdk-common")
 project(':sdk-domain').projectDir = file("sdk/sdk-domain")
 project(':sdk-data').projectDir = file("sdk/sdk-data")
+project(':okhttp').projectDir = file("sdk/okhttp")

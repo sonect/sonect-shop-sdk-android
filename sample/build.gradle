@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.5.1"
+def sonectSdkVersion = "1.6.0-alpha02"
 
 android {
     compileSdkVersion 28
@@ -31,6 +31,7 @@ android {
         }
 
         missingDimensionStrategy 'sdkDependency', 'external'
+        missingDimensionStrategy 'okhttpVersion', 'v4'
     }
 
     signingConfigs {
@@ -85,25 +86,23 @@ buildscript {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
-
-    externalImplementation ("com.github.sonect:android-shop-sdk:$sonectSdkVersion")
-
+    externalImplementation ("com.github.sonect:android-shop-sdk:$sonectSdkVersion") {
+        exclude module: "okhttp4"
+    }
 
     // For Sonect internal usage and direct dependency to source code
     internalImplementation project(path: ':sdk-shop')
     internalImplementation project(path: ':sdk-common')
     internalImplementation project(path: ':sdk-data')
     internalImplementation project(path: ':sdk-domain')
+    internalImplementation project(path: ':okhttp')
 
     // Idenfy
-    implementation 'idenfySdk:com.idenfy.idenfySdk:2.2.1'
-    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.2.1'
+    implementation 'idenfySdk:com.idenfy.idenfySdk:2.6.0'
+    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.6.0'
 
-    // Anyline
-    implementation 'io.anyline:anylinesdk:14@aar'
+    externalImplementation "com.squareup.okhttp3:okhttp:3.14.9"
+    externalImplementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
 }
 
 apply plugin: 'com.google.gms.google-services'
