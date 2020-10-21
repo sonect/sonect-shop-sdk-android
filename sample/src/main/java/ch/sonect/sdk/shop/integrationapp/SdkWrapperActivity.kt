@@ -70,6 +70,10 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
                 override fun onTermsAccepted() {
                     Log.e("!@#","T&C Accepted")
                 }
+
+                override fun onShopOnboardingComplete() {
+                    Log.e("!@#","Shop onboarding completed")
+                }
             })
 
         if (intent.getBooleanExtra(SCANDIT, true)) {

@@ -85,8 +85,16 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
             )
         )
         .sdkCallbacks(object : SdkActionsCallback { // Callbacks from SDK
-            override fun onSdkLastFragmentClosed() {
-                finish() // E.g. when SDK closed we want to close the app itself
+          	override fun onSdkLastFragmentClosed() {
+            	finish() // E.g. when SDK closed we want to close the app itself
+         		}
+          
+            override fun onTermsAccepted() {
+              Log.e("!@#","T&C Accepted")
+            }
+
+            override fun onShopOnboardingComplete() {
+              Log.e("!@#","Shop onboarding completed")
             }
         })
     val doWeWantToUseScanditForScanning = true
@@ -104,6 +112,10 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
         .replace(R.id.container, sonectSDK.getStartFragment()) // Start SDK fragment
         .addToBackStack(null).commit()
 ```
+
+### Get callbacks from SDK
+
+By providing `SdkActionsCallback` you're able to get `onTermsAccepted` and `onShopOnboardingComplete` events from SDK.
 
 ### Provide system event from outer app
 
