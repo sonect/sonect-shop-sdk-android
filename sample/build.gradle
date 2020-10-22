@@ -79,6 +79,7 @@ android {
 buildscript {
     repositories {
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.google.firebase:firebase-appdistribution-gradle:2.0.1'
