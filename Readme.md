@@ -21,13 +21,12 @@ allprojects {
 }
 ```
 
-Also if you need to have iDenfy as a KYC provider and Anyline as a IBAN scanner inside SDK you should provide repositories as well:
+Also if you need to have iDenfy as a KYC provider inside SDK you should provide repositories as well:
 
  ```Gradle
  allprojects {
      repositories {
      	...
-        maven { url 'https://anylinesdk.blob.core.windows.net/maven/' }
         maven { url "https://dl.bintray.com/idenfy/idenfy" }
      }
  }
@@ -37,27 +36,36 @@ Also if you need to have iDenfy as a KYC provider and Anyline as a IBAN scanner 
 
 Latest version of SDK: [![](https://jitpack.io/v/sonect/android-shop-sdk.svg)](https://jitpack.io/#sonect/android-shop-sdk)
 
-Add to `build.gradle` of your app
+Add `SDK` to `build.gradle` of your app. SDK could work with both `okhttp3` major versions 3 and 4. They have slightly incompatible changes so you **must** define which one you want to use.
+
+You should
+
+- Exclude one of `okhttp3` or `okhttp4` from dependencies
+- Make sure that other lib is connected - both okhttp + loggingInterceptor
+
+Sample of using `okhttp3` major version 3.
 
 ```Gradle
 dependencies {
 	...
-    implementation ("com.github.sonect:android-shop-sdk:{latestVersion}")
+    implementation ("com.github.sonect:android-shop-sdk:{latestVersion}") {
+        exclude module: "okhttp4"
+    }
+    // Okhttp must be provided as a separate dependency
+    externalImplementation "com.squareup.okhttp3:okhttp:3.14.9"
+    externalImplementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
     ...
 }
 ```
 
-If you need iDenfy and Anyline also include their dependencies:
+If you need iDenfy also include their dependencies:
 
 ```Gradle
 dependencies {
 	...
     //Idenfy
-    implementation 'idenfySdk:com.idenfy.idenfySdk:2.2.1'
-    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.2.1'
-
-    // Anyline
-    implementation 'io.anyline:anylinesdk:14@aar'
+    implementation 'idenfySdk:com.idenfy.idenfySdk:2.6.0'
+    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.6.0'
     ...
 }
 ```
@@ -77,8 +85,16 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
             )
         )
         .sdkCallbacks(object : SdkActionsCallback { // Callbacks from SDK
-            override fun onSdkLastFragmentClosed() {
-                finish() // E.g. when SDK closed we want to close the app itself
+          	override fun onSdkLastFragmentClosed() {
+            	finish() // E.g. when SDK closed we want to close the app itself
+         		}
+          
+            override fun onTermsAccepted() {
+              Log.e("!@#","T&C Accepted")
+            }
+
+            override fun onShopOnboardingComplete() {
+              Log.e("!@#","Shop onboarding completed")
             }
         })
     val doWeWantToUseScanditForScanning = true
@@ -89,13 +105,73 @@ To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` i
         configBuilder.customScannerFragment(CustomScannerFragment()) // Provide scanner fragment
     }
 
-    
     val config = configBuilder.build()
     val sonectSDK = SonectSDK(this, config)
 
     supportFragmentManager.beginTransaction()
         .replace(R.id.container, sonectSDK.getStartFragment()) // Start SDK fragment
         .addToBackStack(null).commit()
+```
+
+### Get callbacks from SDK
+
+By providing `SdkActionsCallback` you're able to get `onTermsAccepted` and `onShopOnboardingComplete` events from SDK.
+
+### Provide system event from outer app
+
+#### Provide back event into SDK
+
+Whole sdk is built on fragments and in order to handle navigation stack properly BackPress event should be provided by wrapping `Activity`.
+
+```kotlin
+override fun onBackPressed() {
+   var backIsHandled = false
+   for (fragment in supportFragmentManager.fragments) {
+       if ((fragment as? EntryPointFragment)?.handleBack() == true) {
+           // Handle back by ourselves, SDK won't handle it anymore
+           backIsHandled = true
+       }
+   }
+   if (!backIsHandled) {
+       super.onBackPressed()
+   }
+}
+```
+
+
+
+#### Provide Activity result into SDK
+
+Sdk have an interface `ActivityResultStorage` with two methods `getPendingResult` and `addNavigationResult`. `Activity` in which you integrate Shop SDK have to implement this interface and return peding result for the request code. It is needed to support proper navigation in case of `iDenfy` for KYC inside SDK.
+
+Possible simple implementation of the approach:
+
+```kotlin
+class MyAwesomeActivity : AppCompatActivity(), ActivityResultStorage {
+  private val pendingResults = mutableMapOf<Int, ActivityResult>()
+  ...
+  override fun getPendingResult(requestCode: Int) = pendingResults.remove(requestCode)
+  ...
+  override fun addNavigationResult(requestCode: Int, result: ActivityResult) {
+    pendingResults[requestCode] = result
+  }
+  ...
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (couldHanldeByYourself == true) {
+          
+        } else {
+           // Save current result into pending results with proper requestCode
+					addNavigationResult(requestCode, ActivityResult(resultCode, data))
+
+          val topFragment = supportFragmentManager.let { it.fragments[it.fragments.size - 1] }
+          // Here we call system's onActivityResult method, won't harm any other fragments.
+          // Inside SDK we'll call for getPendingResult and handle result by SDK.
+          topFragment?.onActivityResult(requestCode, resultCode, data)
+          super.onActivityResult(requestCode, resultCode, data) 
+        }
+    }
+  ...
+}
 ```
 
 ### Custom barcode scanner 
