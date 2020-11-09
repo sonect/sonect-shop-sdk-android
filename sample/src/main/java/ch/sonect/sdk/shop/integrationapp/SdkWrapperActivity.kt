@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import ch.sonect.sdk.shop.ActivityResultHandlingFragment
 import ch.sonect.sdk.shop.EntryPointFragment
 import ch.sonect.sdk.shop.SdkActionsCallback
 import ch.sonect.sdk.shop.SonectSDK
@@ -20,7 +19,8 @@ class SdkWrapperActivity : AppCompatActivity() {
         const val SCANDIT = "scandit"
         const val DEVICE_ID = "devId"
 
-        const val SCANDIT_CUSTOM_LICENSE_KEY = "Af7O+WkxSKInN6dNTCx/1VQVFERGB4fVhCqgBSlYhAG4aaMH20MkhwEmJoLVTtUJB2BRh4JB4wpZMEZ7umLb+6giYwWARXDpVnKXRthSSZNueDQXtxaYmUtSyNMYLMWdwjeUFicrsE9ea6d03ww/TQMgs303FSckQSHRH8dBRccWfy3cuN49UaJpXGS49SBQrStQIGj1p2mw2Y9FmMx7EdY3AkPxa7/9aPQcqDW7yhORsAP0zXzYE21oyfD+5g+mQzYVxn5/70qYBZNS/970MWpRJdbCVPuBrz/aDPxj5tV71OyVWrO5pVXtIJd73lkfoIvMltGi+0JD7NiiAgTO1TYaaAErHJRr3PEDe5pYzwIksGHgshtXZonUNF6DFYUscBEwWRvB1ODcog5Lt8MUamLOIHQ2Cru/4gBNZ1bq6BfJt6duBDi4YZnxdXW5bSuXxX+Kz0oQDQ5TCRs096COutR24PzpZL3InwL7iwvsKQ/jvjFH5SRGq0ojbuCJY3lXTL3P89S5AsvwOWSuUvC3bhqSLwPPuKkK3UoRAB1JdT/8DHeedGWerdd2YSwjj8Oe0mmNlVnG8s9Vb1ihGxYMDID9IM1eTG6nbWQlrwz6cSWUVHO4GkyRGAWKGcsR+1tE3cC3880+s2R0YBislBAk/nuADk/MozJqNT/88b8yojs/MO7/fMWeFkK+Pn5qxWpfYu2K+9RZNE+YSE1XNGlPS+hjSvBpbjoEU/beXrxExwFNP8+bZDhP6Ks1BbAZeVwgrK8y3gYCG4+DzKQu48ckDgZ/xcMGOE0XW7ZUkbbitlMmuEmkGCyHEPTQ+c0zXhkbceLILQLXxQ=="
+        const val SCANDIT_CUSTOM_LICENSE_KEY =
+            "Af7O+WkxSKInN6dNTCx/1VQVFERGB4fVhCqgBSlYhAG4aaMH20MkhwEmJoLVTtUJB2BRh4JB4wpZMEZ7umLb+6giYwWARXDpVnKXRthSSZNueDQXtxaYmUtSyNMYLMWdwjeUFicrsE9ea6d03ww/TQMgs303FSckQSHRH8dBRccWfy3cuN49UaJpXGS49SBQrStQIGj1p2mw2Y9FmMx7EdY3AkPxa7/9aPQcqDW7yhORsAP0zXzYE21oyfD+5g+mQzYVxn5/70qYBZNS/970MWpRJdbCVPuBrz/aDPxj5tV71OyVWrO5pVXtIJd73lkfoIvMltGi+0JD7NiiAgTO1TYaaAErHJRr3PEDe5pYzwIksGHgshtXZonUNF6DFYUscBEwWRvB1ODcog5Lt8MUamLOIHQ2Cru/4gBNZ1bq6BfJt6duBDi4YZnxdXW5bSuXxX+Kz0oQDQ5TCRs096COutR24PzpZL3InwL7iwvsKQ/jvjFH5SRGq0ojbuCJY3lXTL3P89S5AsvwOWSuUvC3bhqSLwPPuKkK3UoRAB1JdT/8DHeedGWerdd2YSwjj8Oe0mmNlVnG8s9Vb1ihGxYMDID9IM1eTG6nbWQlrwz6cSWUVHO4GkyRGAWKGcsR+1tE3cC3880+s2R0YBislBAk/nuADk/MozJqNT/88b8yojs/MO7/fMWeFkK+Pn5qxWpfYu2K+9RZNE+YSE1XNGlPS+hjSvBpbjoEU/beXrxExwFNP8+bZDhP6Ks1BbAZeVwgrK8y3gYCG4+DzKQu48ckDgZ/xcMGOE0XW7ZUkbbitlMmuEmkGCyHEPTQ+c0zXhkbceLILQLXxQ=="
 
         internal const val ENV = "enviroment"
 
@@ -65,7 +65,7 @@ class SdkWrapperActivity : AppCompatActivity() {
                 }
 
                 override fun onTermsAccepted() {
-                    Log.e("!@#","T&C Accepted")
+                    Log.e("!@#", "T&C Accepted")
                 }
             })
 
@@ -106,12 +106,8 @@ class SdkWrapperActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         for (fragment in supportFragmentManager.fragments) {
-            if (fragment is ActivityResultHandlingFragment) {
-                fragment.onHostedActivityResult(requestCode, resultCode, data)
-            } else {
-                fragment?.onActivityResult(requestCode, resultCode, data)
-                super.onActivityResult(requestCode, resultCode, data)
-            }
+            fragment?.onActivityResult(requestCode, resultCode, data)
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 }

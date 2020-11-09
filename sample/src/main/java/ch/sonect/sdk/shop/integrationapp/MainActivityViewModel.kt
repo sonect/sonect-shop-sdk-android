@@ -1,13 +1,12 @@
 package ch.sonect.sdk.shop.integrationapp
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import ch.sonect.sdk.domain.testing.shop.TestingRepository
+import ch.sonect.sdk.domain.testing.shop.model.TestInfo
 import ch.sonect.sdk.shop.SonectSDK
-import ch.sonect.sdk.shop.integrationapp.data.CacheManager
-import ch.sonect.sdk.shop.integrationapp.data.TestInfo
-import ch.sonect.sdk.shop.integrationapp.repository.TestingRepository
 import com.hadilq.liveevent.LiveEvent
+import javax.inject.Inject
 
 class MainActivityViewModel : ViewModel() {
 
@@ -17,15 +16,17 @@ class MainActivityViewModel : ViewModel() {
     val defaultEnv: LiveData<TestInfo>
         get() = _defaultEnv
 
+    @Inject
+    lateinit var testingRepository: TestingRepository
+
     private val _currentInfo = LiveEvent<TestInfo>()
     private val _defaultEnv = LiveEvent<TestInfo>()
-    private lateinit var testingRepository: TestingRepository
 
     fun infoToClipBoard(): String? {
         return testingRepository.getTestingInfo()
     }
 
-    private fun getLastUsedInfo() {
+    fun getLastUsedInfo() {
         val testInfo = testingRepository.getLatestInfoUsed() ?: testingRepository.getDevDefaults()
         _currentInfo.value = testInfo
     }
@@ -41,13 +42,4 @@ class MainActivityViewModel : ViewModel() {
             SonectSDK.Config.Enviroment.DEV -> testingRepository.getDevDefaults()
         }
     }
-
-    fun setContext(applicationContext: Context) {
-        testingRepository =
-            TestingRepository(
-                CacheManager(applicationContext)
-            )
-        getLastUsedInfo()
-    }
-
 }

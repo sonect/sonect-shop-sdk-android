@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Observer
 import ch.sonect.common.extension.afterTextChanged
+import ch.sonect.sdk.domain.testing.shop.model.TestInfo
 import ch.sonect.sdk.shop.SonectSDK
-import ch.sonect.sdk.shop.integrationapp.data.TestInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        (application as SampleApp).applicationInjector.inject(viewModel)
+
         btnStartSdkFragment.setOnClickListener {
             val signature = calculateSignature(testInfo.merchantId.orEmpty())
             viewModel.saveCurrentInfo(testInfo)
@@ -36,14 +38,15 @@ class MainActivity : AppCompatActivity() {
                 testInfo.merchantId.orEmpty(),
                 chkScandit.isChecked,
                 getTokenSDK(),
-                testInfo.envKey,
+                SonectSDK.Config.Enviroment.valueOf(testInfo.envKey.name),
                 signature,
                 if (testInfo.merchantId.isNullOrBlank()) null else testInfo.merchantId
             )
         }
 
         initObservers()
-        viewModel.setContext(applicationContext)
+
+        viewModel.getLastUsedInfo()
 
         etMerchantId.addTextChangedListener(afterTextChanged {
             testInfo.merchantId = it.toString()
@@ -101,9 +104,9 @@ class MainActivity : AppCompatActivity() {
         etDeviceId.setText(it.deviceId)
 
         when (it.envKey) {
-            SonectSDK.Config.Enviroment.DEV -> chkDev.isChecked = true
-            SonectSDK.Config.Enviroment.STAGING -> chkTest.isChecked = true
-            SonectSDK.Config.Enviroment.PRODUCTION -> chkProd.isChecked = true
+            TestInfo.SonectEnv.DEV -> chkDev.isChecked = true
+            TestInfo.SonectEnv.STAGING -> chkTest.isChecked = true
+            TestInfo.SonectEnv.PRODUCTION -> chkProd.isChecked = true
         }
     }
 
