@@ -5,44 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import ch.sonect.common.navigation.ActivityResult
 import ch.sonect.common.navigation.ActivityResultStorage
 import ch.sonect.sdk.shop.EntryPointFragment
 import ch.sonect.sdk.shop.SdkActionsCallback
 import ch.sonect.sdk.shop.SonectSDK
 
+private const val SCANDIT_CUSTOM_LICENSE_KEY = "AbUeehXGNMOiM+J7yjRp+AYiJm9gMkFCsSa1J/54o4T5YZKNmmGVEWYM8ZPbTjuCOnyM6IxzWsJ0Q0nefXNu83ha/5tjUWNKl1lGfmtlqhRed7QWXzpwLeFSIqudfCBbzVaL4nd+UFcDWfoQ5g7WAp8Ef2vHAHdShh2/7t7dkGZ2pg0/SzjyvgMV8AQpFFuFmm9BfUoqQG+T8Sjd534yfAP8r3S5q95m5WHxfo37vnV+kziFBtSti+bOH1xJraCR/lCPgbIuAGBd7IBXmla3u/AKZSrCCBzhOEtms7Ws/14PZ6bp7tC8RunvYRUXRNE0njYB//uo7zikp0qzfAMxR6cygW5KT98F5Vr+g7HDNaEV9y9cqp4OU8oaFDAEhBqFZmpsGddGr6NsPUi6aWAlTxzgtzAcy8tEv2+VIk0x6S5C0YaALnHbmgnjidswnarA4eIq3s+1t/M6RkRJ0oAOAm5+EAL5Xn+tmvig7r8AJ/tZgmkAuinJtLAmNOXffqFoQ+ImyFS5GD8s2FfPYjx9K+9VrFYiQ/zkSSzR5DhbCmcliy+beQcMFACTbrkfFL5q4u6S6qf1CCiVNyNMprzB/vUgW3uPtVotqQ7V8cVmil0bLOseV1fAm+igjTb9v7B0il2syJfMO50PDXM2GSy0qXnihntpdEm1MdscjwclUgiUSN17loFqkik78P/64dF5QLeR2i3/FX9EULkWT66MJUWwtv2yuuxJarRrYK9iy+4hHTfyON3BJ88g8JDL0j5DkQF5K01wtlDURazyjgypQSNDWwrtG8sxgqumWMd3nrswVlxefYCKwbDV0SPnAbLunjvCqPU8nKP9+A=="
+
 class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
 
     private val pendingResults = mutableMapOf<Int, ActivityResult>()
 
     companion object {
-        const val LM = "lm"
-        const val UID = "uid"
-        const val TSDK = "toksdk"
-        const val SIGN = "signature"
-        const val SCANDIT = "scandit"
-        const val DEVICE_ID = "devId"
-
-        const val SCANDIT_CUSTOM_LICENSE_KEY = "AbUeehXGNMOiM+J7yjRp+AYiJm9gMkFCsSa1J/54o4T5YZKNmmGVEWYM8ZPbTjuCOnyM6IxzWsJ0Q0nefXNu83ha/5tjUWNKl1lGfmtlqhRed7QWXzpwLeFSIqudfCBbzVaL4nd+UFcDWfoQ5g7WAp8Ef2vHAHdShh2/7t7dkGZ2pg0/SzjyvgMV8AQpFFuFmm9BfUoqQG+T8Sjd534yfAP8r3S5q95m5WHxfo37vnV+kziFBtSti+bOH1xJraCR/lCPgbIuAGBd7IBXmla3u/AKZSrCCBzhOEtms7Ws/14PZ6bp7tC8RunvYRUXRNE0njYB//uo7zikp0qzfAMxR6cygW5KT98F5Vr+g7HDNaEV9y9cqp4OU8oaFDAEhBqFZmpsGddGr6NsPUi6aWAlTxzgtzAcy8tEv2+VIk0x6S5C0YaALnHbmgnjidswnarA4eIq3s+1t/M6RkRJ0oAOAm5+EAL5Xn+tmvig7r8AJ/tZgmkAuinJtLAmNOXffqFoQ+ImyFS5GD8s2FfPYjx9K+9VrFYiQ/zkSSzR5DhbCmcliy+beQcMFACTbrkfFL5q4u6S6qf1CCiVNyNMprzB/vUgW3uPtVotqQ7V8cVmil0bLOseV1fAm+igjTb9v7B0il2syJfMO50PDXM2GSy0qXnihntpdEm1MdscjwclUgiUSN17loFqkik78P/64dF5QLeR2i3/FX9EULkWT66MJUWwtv2yuuxJarRrYK9iy+4hHTfyON3BJ88g8JDL0j5DkQF5K01wtlDURazyjgypQSNDWwrtG8sxgqumWMd3nrswVlxefYCKwbDV0SPnAbLunjvCqPU8nKP9+A=="
-
-        internal const val ENV = "enviroment"
-
-        fun start(
-            activity: Activity, lightMode: Boolean, userId: String,
-            isScandit: Boolean,
-            tokenSDK: String,
-            environment: SonectSDK.Config.Enviroment,
-            signature: String,
-            deviceId: String?
-        ) {
+        fun start(activity: Activity) {
             val newActivity = Intent(activity, SdkWrapperActivity::class.java)
-            newActivity.putExtra(LM, lightMode)
-            newActivity.putExtra(UID, userId)
-            newActivity.putExtra(TSDK, tokenSDK)
-            newActivity.putExtra(ENV, environment)
-            newActivity.putExtra(SCANDIT, isScandit)
-            newActivity.putExtra(SIGN, signature)
-            newActivity.putExtra(DEVICE_ID, deviceId)
             activity.startActivity(newActivity)
         }
     }
@@ -51,15 +30,35 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrapper)
 
+        val viewModel : SdkWrapperActivityViewModel = ViewModelProvider(this).get(SdkWrapperActivityViewModel::class.java)
+        viewModel.state.observe(this, Observer {
+            when (it) {
+                is SdkWrapperActivityViewModel.DataState.LoadedConfig -> {
+                    startSdk(it)
+                }
+            }
+        })
+    }
+
+    private fun startSdk(config: SdkWrapperActivityViewModel.DataState.LoadedConfig) {
+        val outerData = config.data
+        val token = config.token
+        val sig = config.signature
+
         val builder: SonectSDK.Config.Builder = SonectSDK.Config.Builder()
+
+        val env = (outerData.find { it is Config.Environment } as? Config.Environment)?.env ?: SonectSDK.Config.Enviroment.DEV
+        val merchantId = (outerData.find { it is Config.MerchantId } as? Config.MerchantId)?.value ?: ""
+        val deviceId = (outerData.find { it is Config.DeviceId } as? Config.DeviceId)?.value ?: ""
+
         val configBuilder = builder
-            .enviroment(intent.getSerializableExtra(ENV) as SonectSDK.Config.Enviroment)
+            .enviroment(env)
             .userCredentials(
                 SonectSDK.Config.UserCredentials(
-                    intent.getStringExtra(UID),
-                    intent.getStringExtra(TSDK),
-                    signature = intent.getStringExtra(SIGN),
-                    device_id = intent.getStringExtra(DEVICE_ID)
+                    merchantId,
+                    token,
+                    signature = sig,
+                    device_id = deviceId
                 )
             )
             .sdkCallbacks(object : SdkActionsCallback {
@@ -76,13 +75,15 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
                 }
             })
 
-        if (intent.getBooleanExtra(SCANDIT, true)) {
+        val isScandit = (outerData.find { it is Config.Scanner } as? Config.Scanner)?.isScandit ?: true
+        if (isScandit) {
             configBuilder.customScanditKey(SCANDIT_CUSTOM_LICENSE_KEY)
         } else {
             configBuilder.customScannerFragment(CustomScannerFragment())
         }
 
-        if (intent.getBooleanExtra(LM, false)) {
+        val isLight = (outerData.find { it is Config.Theme } as? Config.Theme)?.isLight ?: true
+        if (isLight) {
             // Light theme is not supported yet
 //            configBuilder.setLightTheme()
         }
