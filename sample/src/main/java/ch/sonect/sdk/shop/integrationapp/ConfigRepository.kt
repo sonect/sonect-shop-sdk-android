@@ -3,7 +3,6 @@ package ch.sonect.sdk.shop.integrationapp
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import ch.sonect.sdk.shop.SonectSDK
-import java.io.Serializable
 
 class ConfigRepository(private val preferences: SharedPreferences) {
 
@@ -13,11 +12,6 @@ class ConfigRepository(private val preferences: SharedPreferences) {
         val storedConfig = get()
         val env = (storedConfig.find { it is Config.Environment } as? Config.Environment)?.env ?: SonectSDK.Config.Enviroment.DEV
         selectedEnv = env
-    }
-
-    fun clear(): Set<Config> {
-        preferences.edit().clear().apply()
-        return get()
     }
 
     fun get(): Set<Config> = setOf(
@@ -62,13 +56,17 @@ private fun String?.toEnv(): SonectSDK.Config.Enviroment {
     return result ?: SonectSDK.Config.Enviroment.DEV
 }
 
+inline fun <reified T> Set<Config>.get() : T {
+    return find { it is T } as T
+}
+
 sealed class Config {
-    data class MerchantId(val value: String): Config(), Serializable
-    data class ClientId(val value: String): Config(), Serializable
-    data class ClientSecret(val value: String): Config(), Serializable
-    data class DeviceId(val value: String): Config(), Serializable
-    data class HmacKey(val value: String): Config(), Serializable
-    data class Theme(val isLight: Boolean): Config(), Serializable
-    data class Scanner(val isScandit: Boolean): Config(), Serializable
-    data class Environment(val env: SonectSDK.Config.Enviroment): Config(), Serializable
+    data class MerchantId(val value: String): Config()
+    data class ClientId(val value: String): Config()
+    data class ClientSecret(val value: String): Config()
+    data class DeviceId(val value: String): Config()
+    data class HmacKey(val value: String): Config()
+    data class Theme(val isLight: Boolean): Config()
+    data class Scanner(val isScandit: Boolean): Config()
+    data class Environment(val env: SonectSDK.Config.Enviroment): Config()
 }
