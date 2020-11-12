@@ -1,7 +1,8 @@
-package ch.sonect.sdk.shop.integrationapp
+package ch.sonect.sdk.shop.integrationapp.ui
 
 import android.os.Bundle
 import android.view.View
+import ch.sonect.sdk.shop.integrationapp.R
 import ch.sonect.sdk.shop.transactions.screen.scanner.ScannerFragment
 import kotlinx.android.synthetic.main.fragment_custom_scanner.*
 
