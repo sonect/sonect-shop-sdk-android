@@ -50,7 +50,8 @@ class MainActivity : AppCompatActivity() {
                 isLightTheme = chkLight.isChecked,
                 isScandit = chkScandit.isChecked,
                 environment = getSelectedEnvironment(),
-                isRandomShopApplied = randomShopYesCheckbox.isChecked
+                isRandomShopApplied = randomShopYesCheckbox.isChecked,
+                isRandomBeneficiaryApplied = randomBenYesCheckbox.isChecked,
             )
             viewModel.save(config)
         }
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
         isLightTheme: Boolean,
         isScandit: Boolean,
         environment: SonectSDK.Config.Enviroment,
-        isRandomShopApplied: Boolean
+        isRandomShopApplied: Boolean,
+        isRandomBeneficiaryApplied: Boolean
     ): Set<Config> = setOf(
         Config.MerchantId(merchantId),
         Config.ClientId(clientId),
@@ -76,7 +78,8 @@ class MainActivity : AppCompatActivity() {
         Config.Theme(isLightTheme),
         Config.Scanner(isScandit),
         Config.Environment(environment),
-        Config.RandomShop(isRandomShopApplied)
+        Config.RandomShop(isRandomShopApplied),
+        Config.RandomBeneficiary(isRandomBeneficiaryApplied)
     )
 
     private fun getSelectedEnvironment(): SonectSDK.Config.Enviroment {
@@ -114,6 +117,10 @@ class MainActivity : AppCompatActivity() {
                 is Config.RandomShop -> {
                     randomShopYesCheckbox.isChecked = it.isRandomShopOnStart
                     randomShopNoCheckbox.isChecked = !it.isRandomShopOnStart
+                }
+                is Config.RandomBeneficiary -> {
+                    randomBenYesCheckbox.isChecked = it.isRandomBeneficiary
+                    randomBenNoCheckbox.isChecked = !it.isRandomBeneficiary
                 }
             }
         }

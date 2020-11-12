@@ -30,6 +30,7 @@ class ConfigRepository(private val context: Context) {
         Config.Theme(preferences.getBoolean(Config.Theme::class.java.name + selectedEnv, false)),
         Config.Scanner(preferences.getBoolean(Config.Scanner::class.java.name + selectedEnv, true)),
         Config.RandomShop(preferences.getBoolean(Config.RandomShop::class.java.name + selectedEnv, false)),
+        Config.RandomBeneficiary(preferences.getBoolean(Config.RandomBeneficiary::class.java.name + selectedEnv, false)),
     )
 
     fun save(config: Set<Config>) {
@@ -45,6 +46,7 @@ class ConfigRepository(private val context: Context) {
                 is Config.Theme -> edit.putBoolean(Config.Theme::class.java.name + selectedEnv, type.isLight)
                 is Config.Scanner -> edit.putBoolean(Config.Scanner::class.java.name + selectedEnv, type.isScandit)
                 is Config.RandomShop -> edit.putBoolean(Config.RandomShop::class.java.name + selectedEnv, type.isRandomShopOnStart)
+                is Config.RandomBeneficiary -> edit.putBoolean(Config.RandomBeneficiary::class.java.name + selectedEnv, type.isRandomBeneficiary)
             }
         }
         edit.apply()
@@ -107,4 +109,5 @@ sealed class Config {
     data class Scanner(val isScandit: Boolean): Config()
     data class Environment(val env: SonectSDK.Config.Enviroment): Config()
     data class RandomShop(val isRandomShopOnStart: Boolean): Config()
+    data class RandomBeneficiary(val isRandomBeneficiary: Boolean): Config()
 }
