@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
+import ch.sonect.sdk.domain.shop.model.Shop
 import ch.sonect.sdk.shop.SonectSDK
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -20,6 +21,7 @@ class ConfigRepository(private val context: Context) {
     }
 
     fun getConfig(): Set<Config> = setOf(
+        Config.Environment(preferences.getString(Config.Environment::class.java.name, "").toEnv()),
         Config.MerchantId(preferences.getString(Config.MerchantId::class.java.name + selectedEnv, "") ?: ""),
         Config.ClientId(preferences.getString(Config.ClientId::class.java.name + selectedEnv, "") ?: ""),
         Config.ClientSecret(preferences.getString(Config.ClientSecret::class.java.name + selectedEnv, "") ?: ""),
@@ -27,13 +29,14 @@ class ConfigRepository(private val context: Context) {
         Config.HmacKey(preferences.getString(Config.HmacKey::class.java.name + selectedEnv, "") ?: ""),
         Config.Theme(preferences.getBoolean(Config.Theme::class.java.name + selectedEnv, false)),
         Config.Scanner(preferences.getBoolean(Config.Scanner::class.java.name + selectedEnv, true)),
-        Config.Environment(preferences.getString(Config.Environment::class.java.name, "").toEnv())
+        Config.RandomShop(preferences.getBoolean(Config.RandomShop::class.java.name + selectedEnv, false)),
     )
 
     fun save(config: Set<Config>) {
         val edit = preferences.edit()
         config.forEach { type ->
             when (type) {
+                is Config.Environment -> edit.putString(Config.Environment::class.java.name, (type.env as Enum<*>).name)
                 is Config.MerchantId -> edit.putString(Config.MerchantId::class.java.name + selectedEnv, type.value)
                 is Config.ClientId -> edit.putString(Config.ClientId::class.java.name + selectedEnv, type.value)
                 is Config.ClientSecret -> edit.putString(Config.ClientSecret::class.java.name + selectedEnv, type.value)
@@ -41,7 +44,7 @@ class ConfigRepository(private val context: Context) {
                 is Config.HmacKey -> edit.putString(Config.HmacKey::class.java.name + selectedEnv, type.value)
                 is Config.Theme -> edit.putBoolean(Config.Theme::class.java.name + selectedEnv, type.isLight)
                 is Config.Scanner -> edit.putBoolean(Config.Scanner::class.java.name + selectedEnv, type.isScandit)
-                is Config.Environment -> edit.putString(Config.Environment::class.java.name, (type.env as Enum<*>).name)
+                is Config.RandomShop -> edit.putBoolean(Config.RandomShop::class.java.name + selectedEnv, type.isRandomShopOnStart)
             }
         }
         edit.apply()
@@ -103,4 +106,5 @@ sealed class Config {
     data class Theme(val isLight: Boolean): Config()
     data class Scanner(val isScandit: Boolean): Config()
     data class Environment(val env: SonectSDK.Config.Enviroment): Config()
+    data class RandomShop(val isRandomShopOnStart: Boolean): Config()
 }
