@@ -20,27 +20,11 @@ class ConfigRepository(private val context: Context) {
     }
 
     fun getConfig(): Set<Config> = setOf(
-        Config.MerchantId(
-            preferences.getString(
-                Config.MerchantId::class.java.name + selectedEnv,
-                ""
-            ) ?: ""
-        ),
-        Config.ClientId(
-            preferences.getString(Config.ClientId::class.java.name + selectedEnv, "") ?: ""
-        ),
-        Config.ClientSecret(
-            preferences.getString(
-                Config.ClientSecret::class.java.name + selectedEnv,
-                ""
-            ) ?: ""
-        ),
-        Config.DeviceId(
-            preferences.getString(Config.DeviceId::class.java.name + selectedEnv, "") ?: ""
-        ),
-        Config.HmacKey(
-            preferences.getString(Config.HmacKey::class.java.name + selectedEnv, "") ?: ""
-        ),
+        Config.MerchantId(preferences.getString(Config.MerchantId::class.java.name + selectedEnv, "") ?: ""),
+        Config.ClientId(preferences.getString(Config.ClientId::class.java.name + selectedEnv, "") ?: ""),
+        Config.ClientSecret(preferences.getString(Config.ClientSecret::class.java.name + selectedEnv, "") ?: ""),
+        Config.DeviceId(preferences.getString(Config.DeviceId::class.java.name + selectedEnv, "") ?: ""),
+        Config.HmacKey(preferences.getString(Config.HmacKey::class.java.name + selectedEnv, "") ?: ""),
         Config.Theme(preferences.getBoolean(Config.Theme::class.java.name + selectedEnv, false)),
         Config.Scanner(preferences.getBoolean(Config.Scanner::class.java.name + selectedEnv, true)),
         Config.Environment(preferences.getString(Config.Environment::class.java.name, "").toEnv())
