@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.6.4"
+def sonectSdkVersion = "1.6.5"
 
 android {
     compileSdkVersion 28
@@ -65,6 +65,16 @@ android {
         }
     }
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
     flavorDimensions("sdkDependency")
     productFlavors {
         internal {
@@ -87,6 +97,8 @@ buildscript {
 }
 
 dependencies {
+    coreLibraryDesugaring desugaring
+
     externalImplementation ("com.github.sonect:android-shop-sdk:$sonectSdkVersion") {
         exclude module: "okhttp4"
     }
