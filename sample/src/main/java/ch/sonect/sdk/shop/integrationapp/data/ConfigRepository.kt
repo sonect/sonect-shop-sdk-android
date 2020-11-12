@@ -1,4 +1,4 @@
-package ch.sonect.sdk.shop.integrationapp
+package ch.sonect.sdk.shop.integrationapp.data
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -41,7 +41,7 @@ class ConfigRepository(private val context: Context) {
                 is Config.HmacKey -> edit.putString(Config.HmacKey::class.java.name + selectedEnv, type.value)
                 is Config.Theme -> edit.putBoolean(Config.Theme::class.java.name + selectedEnv, type.isLight)
                 is Config.Scanner -> edit.putBoolean(Config.Scanner::class.java.name + selectedEnv, type.isScandit)
-                is Config.Environment -> edit.putString(Config.Environment::class.java.name, type.env.name)
+                is Config.Environment -> edit.putString(Config.Environment::class.java.name, type.env.name())
             }
         }
         edit.apply()
@@ -85,7 +85,7 @@ class ConfigRepository(private val context: Context) {
 @SuppressLint("DefaultLocale")
 private fun String?.toEnv(): SonectSDK.Config.Enviroment {
     val result = SonectSDK.Config.Enviroment.values().find {
-        it.name.equals(this, ignoreCase = true)
+        it.name().equals(this, ignoreCase = true)
     }
     return result ?: SonectSDK.Config.Enviroment.DEV
 }
