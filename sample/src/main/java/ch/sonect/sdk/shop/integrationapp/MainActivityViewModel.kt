@@ -7,7 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ch.sonect.sdk.shop.SonectSDK
 
-class MainActivityViewModel(private val app: Application) : AndroidViewModel(app) {
+class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
+
     val state: LiveData<DataState>
         get() = _state
 

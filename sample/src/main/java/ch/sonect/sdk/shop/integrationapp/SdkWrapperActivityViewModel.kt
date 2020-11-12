@@ -11,6 +11,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class SdkWrapperActivityViewModel(private val app: Application) : AndroidViewModel(app) {
+
     val state: LiveData<DataState>
         get() = _state
 
@@ -18,15 +19,15 @@ class SdkWrapperActivityViewModel(private val app: Application) : AndroidViewMod
 
     private val _state: MutableLiveData<DataState> = MutableLiveData()
 
+    init {
+        _state.value = DataState.LoadedConfig(configRepository.get(), calculateTokenSdk(), calculateSignature())
+    }
+
     private fun getClientId(): String? = (configRepository.get().find { it is Config.ClientId } as? Config.ClientId)?.value
 
     private fun getClientSecret(): String? = (configRepository.get().find { it is Config.ClientSecret } as? Config.ClientSecret)?.value
 
     private fun getHmacKey(): String? = (configRepository.get().find { it is Config.HmacKey } as? Config.HmacKey)?.value
-
-    init {
-        _state.value = DataState.LoadedConfig(configRepository.get(), calculateTokenSdk(), calculateSignature())
-    }
 
     private fun calculateTokenSdk(): String {
         return Base64.encodeToString(
