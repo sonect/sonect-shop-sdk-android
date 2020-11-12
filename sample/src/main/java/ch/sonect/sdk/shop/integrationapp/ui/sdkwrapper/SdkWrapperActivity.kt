@@ -145,16 +145,16 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         )
 
         return SonectSDK.Config.Shop(
-            name = (1..10).map { chars.random() }.joinToString(),
+            name = (1..10).map { chars.random() }.joinToString(separator = ""),
             minHandout = Random.nextInt(10, 100),
             maxHandout = Random.nextInt(101,500),
             pictureUrl = picks.random(),
             address = SonectSDK.Config.Address(
-                address1 = (1..15).map { chars.random() }.joinToString(),
-                address2 = (1..10).map { chars.random() }.joinToString(),
-                city = (1..10).map { chars.random() }.joinToString(),
+                address1 = (1..15).map { chars.random() }.joinToString(separator = ""),
+                address2 = (1..10).map { chars.random() }.joinToString(separator = ""),
+                city = (1..10).map { chars.random() }.joinToString(separator = ""),
                 zipCode = Random.nextInt(1000, 10000).toString(),
-                country = (1..2).map { chars.random() }.joinToString()
+                country = (1..2).map { chars.random() }.joinToString(separator = "")
             ),
             openHours = SonectSDK.Config.OpeningHours(
                 monday = listOf(SonectSDK.Config.OpenCloseTime(getRandomCloseHours(), getRandomOpenHours())),
