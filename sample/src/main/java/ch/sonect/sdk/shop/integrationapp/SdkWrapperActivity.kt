@@ -30,7 +30,8 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrapper)
 
-        val viewModel : SdkWrapperActivityViewModel = ViewModelProvider(this).get(SdkWrapperActivityViewModel::class.java)
+        val viewModel by injectViewModel<SdkWrapperActivityViewModel>(ConfigRepository(applicationContext))
+
         viewModel.state.observe(this, Observer {
             when (it) {
                 is SdkWrapperActivityViewModel.DataState.LoadedConfig -> {

@@ -1,12 +1,15 @@
 package ch.sonect.sdk.shop.integrationapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
 import ch.sonect.sdk.shop.SonectSDK
 
-class ConfigRepository(private val preferences: SharedPreferences) {
+class ConfigRepository(private val context: Context) {
 
     private var selectedEnv: SonectSDK.Config.Enviroment
+    private val preferences = context.getSharedPreferences("SampleApp", AppCompatActivity.MODE_PRIVATE)
 
     init {
         val storedConfig = get()
@@ -45,6 +48,8 @@ class ConfigRepository(private val preferences: SharedPreferences) {
     fun setupEnvironment(env: SonectSDK.Config.Enviroment) {
         selectedEnv = env
     }
+
+    fun getAppName(): String = context.packageName
 
 }
 

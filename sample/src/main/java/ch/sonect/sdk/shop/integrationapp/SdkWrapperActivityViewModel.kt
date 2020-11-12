@@ -1,21 +1,16 @@
 package ch.sonect.sdk.shop.integrationapp
 
-import android.app.Application
-import android.content.Context
 import android.util.Base64
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ch.sonect.sdk.shop.SonectSDK
+import androidx.lifecycle.ViewModel
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-class SdkWrapperActivityViewModel(private val app: Application) : AndroidViewModel(app) {
+class SdkWrapperActivityViewModel(private val configRepository: ConfigRepository) : ViewModel() {
 
     val state: LiveData<DataState>
         get() = _state
-
-    private val configRepository: ConfigRepository = ConfigRepository(app.getSharedPreferences("SampleApp", Context.MODE_PRIVATE))
 
     private val _state: MutableLiveData<DataState> = MutableLiveData()
 
@@ -39,7 +34,7 @@ class SdkWrapperActivityViewModel(private val app: Application) : AndroidViewMod
 
     private fun calculateSignature(): String {
         val merchantId = (configRepository.get().find { it is Config.MerchantId } as? Config.MerchantId)?.value ?: ""
-        val hmacString = "${getClientId()}:${app.packageName}:$merchantId"
+        val hmacString = "${getClientId()}:${configRepository.getAppName()}:$merchantId"
         return Base64.encodeToString(createHmac(hmacString.toByteArray()), Base64.DEFAULT).trim()
     }
 

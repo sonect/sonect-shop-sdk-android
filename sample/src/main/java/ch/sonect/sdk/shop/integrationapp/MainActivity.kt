@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewModel : MainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        val viewModel by injectViewModel<MainActivityViewModel>(ConfigRepository(this))
 
         groupEnviroment.setOnCheckedChangeListener { _, _ ->
             viewModel.changeEnvironment(getSelectedEnvironment())
@@ -24,25 +24,52 @@ class MainActivity : AppCompatActivity() {
                 is MainActivityViewModel.DataState.SdkInitiation -> {
                     SdkWrapperActivity.start(this)
                 }
-                is MainActivityViewModel.DataState.LoadedConfig -> applyConfig(it.data, selectEnv = false)
-                is MainActivityViewModel.DataState.InitialLoadedConfig -> applyConfig(it.data, selectEnv = true)
+                is MainActivityViewModel.DataState.LoadedConfig -> applyConfig(
+                    it.data,
+                    selectEnv = false
+                )
+                is MainActivityViewModel.DataState.InitialLoadedConfig -> applyConfig(
+                    it.data,
+                    selectEnv = true
+                )
             }
         })
 
         btnStartSdkFragment.setOnClickListener {
-            val configBuilder = ConfigSetBuilder()
-            configBuilder.merchantId(etMerchantId.text.toString())
-                .clientId(etClientId.text.toString())
-                .clientSecret(etClientSecret.text.toString())
-                .hmacKey(etHmacKey.text.toString())
-                .deviceId(etDeviceId.text.toString())
-                .isLightTheme(chkLight.isChecked)
-                .isScanditScanner(chkScandit.isChecked)
-                .environment(getSelectedEnvironment())
-            viewModel.save(configBuilder.build())
+            val config = prepareConfig(
+                merchantId = etMerchantId.text.toString(),
+                clientId = etClientId.text.toString(),
+                clientSecret = etClientSecret.text.toString(),
+                hmacKey = etHmacKey.text.toString(),
+                deviceId = etDeviceId.text.toString(),
+                isLightTheme = chkLight.isChecked,
+                isScandit = chkScandit.isChecked,
+                environment = getSelectedEnvironment()
+            )
+            viewModel.save(config)
         }
 
     }
+
+    private fun prepareConfig(
+        merchantId: String,
+        clientId: String,
+        clientSecret: String,
+        hmacKey: String,
+        deviceId: String,
+        isLightTheme: Boolean,
+        isScandit: Boolean,
+        environment: SonectSDK.Config.Enviroment
+    ): Set<Config> = setOf(
+        Config.MerchantId(merchantId),
+        Config.ClientId(clientId),
+        Config.ClientSecret(clientSecret),
+        Config.DeviceId(deviceId),
+        Config.HmacKey(hmacKey),
+        Config.Theme(isLightTheme),
+        Config.Scanner(isScandit),
+        Config.Environment(environment)
+    )
 
     private fun getSelectedEnvironment(): SonectSDK.Config.Enviroment {
         if (chkDev.isChecked) return SonectSDK.Config.Enviroment.DEV
