@@ -9,7 +9,7 @@
     android:layout_margin="32dp"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPaymentWithOptionA"

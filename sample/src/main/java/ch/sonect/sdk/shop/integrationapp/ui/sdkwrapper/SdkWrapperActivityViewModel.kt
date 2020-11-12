@@ -1,8 +1,10 @@
-package ch.sonect.sdk.shop.integrationapp
+package ch.sonect.sdk.shop.integrationapp.ui.sdkwrapper
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ch.sonect.sdk.shop.integrationapp.data.Config
+import ch.sonect.sdk.shop.integrationapp.data.ConfigRepository
 
 class SdkWrapperActivityViewModel(private val configRepository: ConfigRepository) : ViewModel() {
 

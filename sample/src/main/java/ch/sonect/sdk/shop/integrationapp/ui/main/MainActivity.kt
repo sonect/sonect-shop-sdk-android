@@ -1,19 +1,24 @@
-package ch.sonect.sdk.shop.integrationapp
+package ch.sonect.sdk.shop.integrationapp.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import ch.sonect.sdk.shop.SonectSDK
+import ch.sonect.sdk.shop.integrationapp.R
+import ch.sonect.sdk.shop.integrationapp.data.Config
+import ch.sonect.sdk.shop.integrationapp.ui.common.viewModelProvider
+import ch.sonect.sdk.shop.integrationapp.ui.sdkwrapper.SdkWrapperActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel by viewModelProvider<MainActivityViewModel> {
+        MainActivityViewModelFactory(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val viewModel by injectViewModel<MainActivityViewModel>(ConfigRepository(this))
 
         groupEnviroment.setOnCheckedChangeListener { _, _ ->
             viewModel.changeEnvironment(getSelectedEnvironment())
@@ -79,10 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun applyConfig(
-        config: Set<Config>,
-        selectEnv: Boolean
-    ) {
+    private fun applyConfig(config: Set<Config>, selectEnv: Boolean) {
         config.forEach {
             when (it) {
                 is Config.MerchantId -> etMerchantId.setText(it.value)
