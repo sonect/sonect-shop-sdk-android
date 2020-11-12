@@ -184,7 +184,6 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
 
     private fun randomAddress(): SonectSDK.Config.Address = SonectSDK.Config.Address(
         address1 = randomString(),
-        address2 = randomString(),
         city = randomString(),
         zipCode = Random.nextInt(1000, 10000).toString(),
         country = randomString()
