@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import ch.sonect.common.navigation.ActivityResult
 import ch.sonect.common.navigation.ActivityResultStorage
 import ch.sonect.sdk.shop.EntryPointFragment
@@ -48,9 +47,9 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
 
         val builder: SonectSDK.Config.Builder = SonectSDK.Config.Builder()
 
-        val env = outerData.get<Config.Environment>().env
-        val merchantId = outerData.get<Config.MerchantId>().value
-        val deviceId = outerData.get<Config.DeviceId>().value
+        val env = outerData.getSpecificConfig<Config.Environment>().env
+        val merchantId = outerData.getSpecificConfig<Config.MerchantId>().value
+        val deviceId = outerData.getSpecificConfig<Config.DeviceId>().value
 
         val configBuilder = builder
             .enviroment(env)
@@ -76,14 +75,14 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
                 }
             })
 
-        val isScandit = outerData.get<Config.Scanner>().isScandit
+        val isScandit = outerData.getSpecificConfig<Config.Scanner>().isScandit
         if (isScandit) {
             configBuilder.customScanditKey(SCANDIT_CUSTOM_LICENSE_KEY)
         } else {
             configBuilder.customScannerFragment(CustomScannerFragment())
         }
 
-        val isLight = outerData.get<Config.Theme>().isLight
+        val isLight = outerData.getSpecificConfig<Config.Theme>().isLight
         if (isLight) {
             // Light theme is not supported yet
 //            configBuilder.setLightTheme()

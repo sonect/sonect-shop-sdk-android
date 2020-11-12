@@ -13,7 +13,7 @@ class MainActivityViewModel(private val configRepository: ConfigRepository) : Vi
     private val _state: MutableLiveData<DataState> = MutableLiveData()
 
     init {
-        _state.value = DataState.InitialLoadedConfig(configRepository.get())
+        _state.value = DataState.InitialLoadedConfig(configRepository.getConfig())
     }
 
     fun save(config: Set<Config>) {
@@ -23,7 +23,7 @@ class MainActivityViewModel(private val configRepository: ConfigRepository) : Vi
 
     fun changeEnvironment(env: SonectSDK.Config.Enviroment) {
         configRepository.setupEnvironment(env)
-        _state.value = DataState.LoadedConfig(configRepository.get())
+        _state.value = DataState.LoadedConfig(configRepository.getConfig())
     }
 
     sealed class DataState {
