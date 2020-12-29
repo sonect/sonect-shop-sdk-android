@@ -221,6 +221,15 @@ fun beneficiary(beneficiary: Beneficiary) = apply {
 
 Provided `Beneficiary` will prefill data during the user onboarding.
 
+### Compile time config
+
+In order to provide compile time config override resource variables:
+
+```xml
+<!-- Show partner reference/operational ID on confirmed receipt -->
+<bool name="sonect_should_show_partner_reference">false</bool> 
+```
+
 ## Proguard / R8
 
 In case you're using proguard or R8 to obfuscate and optimize your code,
