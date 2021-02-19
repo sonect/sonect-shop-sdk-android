@@ -120,9 +120,9 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         }
 
         val isLight = outerData.getSpecificConfig<Config.Theme>().isLight
+
         if (isLight) {
-            // Light theme is not supported yet
-//            configBuilder.setLightTheme()
+            configBuilder.setLightTheme()
         }
 
         val isRandomShopOnStart = outerData.getSpecificConfig<Config.RandomShop>().isRandomShopOnStart
