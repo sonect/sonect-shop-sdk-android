@@ -3,6 +3,5 @@
         <item name="colorAccent">@color/color3</item>
         <item name="sonectColor3">@color/color3</item>
         <item name="sonectColor5">@color/color5</item>
-        <item name="sonectButtonTextColor">@color/white</item>
     </style>
 </resources>
