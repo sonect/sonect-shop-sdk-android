@@ -21,17 +21,6 @@ allprojects {
 }
 ```
 
-Also if you need to have iDenfy as a KYC provider inside SDK you should provide repositories as well:
-
- ```Gradle
- allprojects {
-     repositories {
-     	...
-        maven { url "https://dl.bintray.com/idenfy/idenfy" }
-     }
- }
- ```
-
 ### Add dependency to the SDK
 
 Latest version of SDK: [![](https://jitpack.io/v/sonect/android-shop-sdk.svg)](https://jitpack.io/#sonect/android-shop-sdk)
@@ -64,8 +53,7 @@ If you need iDenfy also include their dependencies:
 dependencies {
 	...
     //Idenfy
-    implementation 'idenfySdk:com.idenfy.idenfySdk:2.6.0'
-    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.6.0'
+    implementation 'com.github.idenfy:sdk-api:5.1.1'
     ...
 }
 ```

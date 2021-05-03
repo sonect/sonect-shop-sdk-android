@@ -24,7 +24,6 @@ allprojects {
         maven { url 'https://jitpack.io' }
 
         maven { url 'https://anylinesdk.blob.core.windows.net/maven/' }
-        maven { url "https://dl.bintray.com/idenfy/idenfy" }
     }
 }
 

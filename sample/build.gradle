@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.11.1-beta04"
+def sonectSdkVersion = "1.11.1-rc01"
 
 android {
     compileSdkVersion 29
@@ -111,8 +111,7 @@ dependencies {
     internalImplementation project(path: ':okhttp')
 
     // Idenfy
-    implementation 'idenfySdk:com.idenfy.idenfySdk:2.6.0'
-    implementation 'idenfySdk:com.idenfy.idenfySdk.idenfyliveness:2.6.0'
+    implementation 'com.github.idenfy:sdk-api:5.1.1'
 
     externalImplementation "com.squareup.okhttp3:okhttp:3.14.9"
     externalImplementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
