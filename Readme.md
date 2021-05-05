@@ -209,6 +209,16 @@ fun beneficiary(beneficiary: Beneficiary) = apply {
 
 Provided `Beneficiary` will prefill data during the user onboarding.
 
+### Provide additional info from outer app
+
+Builder contains method that allow to pass extra info into SDK which will be proxied to Sonect Backend.
+
+```kotlin
+fun additionalParams(params: Map<String, String>) = apply {
+    additionalParams = params
+}
+```
+
 ### Compile time config
 
 In order to provide compile time config override resource variables:
