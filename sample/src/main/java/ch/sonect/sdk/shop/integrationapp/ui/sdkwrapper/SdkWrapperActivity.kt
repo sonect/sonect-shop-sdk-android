@@ -142,9 +142,10 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         val additionalData = outerData.getSpecificConfig<Config.AdditionalData>().value
         // Data is in a format "key1=value1;key2=value2..."
         val params = additionalData.split(";").associate {
+            if (it.isBlank()) return@associate "" to ""
             val (key, value) = it.split("=")
             key to value
-        }
+        }.filterKeys { it.isNotBlank() }
         if (params.isNotEmpty()) configBuilder.additionalParams(params)
 
         val config = configBuilder.build()
