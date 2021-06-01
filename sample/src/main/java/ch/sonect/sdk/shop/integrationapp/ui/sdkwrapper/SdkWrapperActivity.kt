@@ -99,10 +99,6 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
                 )
             )
             .sdkCallbacks(object : SdkActionsCallback {
-                override fun comparePasscode(passcode: String): Boolean {
-                    return true
-                }
-
                 override fun onSdkLastFragmentClosed() {
                     finish()
                 }
