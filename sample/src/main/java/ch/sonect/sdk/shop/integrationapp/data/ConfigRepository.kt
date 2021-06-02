@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
-import ch.sonect.sdk.domain.shop.model.Shop
 import ch.sonect.sdk.shop.SonectSDK
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -64,7 +63,7 @@ class ConfigRepository(private val context: Context) {
         val clientId = getConfig().getSpecificConfig<Config.ClientId>().value
         val clientSecret = getConfig().getSpecificConfig<Config.ClientSecret>().value
         return Base64.encodeToString(
-            "${clientId}:${clientSecret}".toByteArray(),
+            "$clientId:$clientSecret".toByteArray(),
             Base64.DEFAULT
         )
             .replace("\n", "")
@@ -73,7 +72,7 @@ class ConfigRepository(private val context: Context) {
     fun getSignature(): String {
         val merchantId = getConfig().getSpecificConfig<Config.MerchantId>().value
         val clientId = getConfig().getSpecificConfig<Config.ClientId>().value
-        val hmacString = "${clientId}:${getAppName()}:$merchantId"
+        val hmacString = "$clientId:${getAppName()}:$merchantId"
         return Base64.encodeToString(createHmac(hmacString.toByteArray()), Base64.DEFAULT).trim()
     }
 
@@ -97,20 +96,20 @@ private fun String?.toEnv(): SonectSDK.Config.Enviroment {
     return result ?: SonectSDK.Config.Enviroment.DEV
 }
 
-inline fun <reified T> Set<Config>.getSpecificConfig() : T {
+inline fun <reified T> Set<Config>.getSpecificConfig(): T {
     return find { it is T } as T
 }
 
 sealed class Config {
-    data class MerchantId(val value: String): Config()
-    data class ClientId(val value: String): Config()
-    data class ClientSecret(val value: String): Config()
-    data class DeviceId(val value: String): Config()
-    data class HmacKey(val value: String): Config()
-    data class Theme(val isLight: Boolean): Config()
-    data class Scanner(val isScandit: Boolean): Config()
-    data class Environment(val env: SonectSDK.Config.Enviroment): Config()
-    data class RandomShop(val isRandomShopOnStart: Boolean): Config()
-    data class RandomBeneficiary(val isRandomBeneficiary: Boolean): Config()
-    data class AdditionalData(val value: String): Config()
+    data class MerchantId(val value: String) : Config()
+    data class ClientId(val value: String) : Config()
+    data class ClientSecret(val value: String) : Config()
+    data class DeviceId(val value: String) : Config()
+    data class HmacKey(val value: String) : Config()
+    data class Theme(val isLight: Boolean) : Config()
+    data class Scanner(val isScandit: Boolean) : Config()
+    data class Environment(val env: SonectSDK.Config.Enviroment) : Config()
+    data class RandomShop(val isRandomShopOnStart: Boolean) : Config()
+    data class RandomBeneficiary(val isRandomBeneficiary: Boolean) : Config()
+    data class AdditionalData(val value: String) : Config()
 }

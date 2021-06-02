@@ -92,7 +92,6 @@ class MainActivity : AppCompatActivity() {
         return SonectSDK.Config.Enviroment.DEV
     }
 
-
     private fun applyConfig(config: Set<Config>, selectEnv: Boolean) {
         config.forEach {
             when (it) {

@@ -31,6 +31,6 @@ class MainActivityViewModel(private val configRepository: ConfigRepository) : Vi
     sealed class DataState {
         class LoadedConfig(val data: Set<Config>) : DataState()
         class InitialLoadedConfig(val data: Set<Config>) : DataState()
-        object SdkInitiation: DataState()
+        object SdkInitiation : DataState()
     }
 }
