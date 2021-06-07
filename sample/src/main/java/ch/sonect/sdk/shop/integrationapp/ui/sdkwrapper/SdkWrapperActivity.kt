@@ -76,7 +76,6 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-
     private fun startSdk(config: SdkWrapperActivityViewModel.DataState.LoadedConfig) {
         val outerData = config.data
         val token = config.token
@@ -108,11 +107,11 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
                 }
 
                 override fun onTermsAccepted() {
-                    Log.e("!@#","T&C Accepted")
+                    Log.e("!@#", "T&C Accepted")
                 }
 
                 override fun onShopOnboardingComplete() {
-                    Log.e("!@#","Shop onboarding completed")
+                    Log.e("!@#", "Shop onboarding completed")
                 }
             })
 
@@ -186,14 +185,12 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         )
     )
 
-
     private fun generateRandomBeneficiary(): SonectSDK.Config.Beneficiary = SonectSDK.Config.Beneficiary(
         fullName = randomString(),
         address = randomAddress(),
         payoutBankAccountNumber = "IT60X0542811101000000123456",
         email = "${randomString()}@{${randomString()}.com"
     )
-
 
     private fun randomAddress(): SonectSDK.Config.Address = SonectSDK.Config.Address(
         address1 = randomString(),
@@ -214,5 +211,5 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
             activity.startActivity(newActivity)
         }
     }
-    
+
 }

@@ -1,3 +1,0 @@
-before_install:
-  - echo "Download translations Build Step"
-  - ./gradlew sdk-shop:downloadTranslationsForSdk

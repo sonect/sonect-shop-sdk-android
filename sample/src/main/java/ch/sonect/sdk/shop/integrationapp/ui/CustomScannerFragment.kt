@@ -6,7 +6,8 @@ import ch.sonect.sdk.shop.integrationapp.R
 import ch.sonect.sdk.shop.transactions.screen.scanner.ScannerFragment
 import kotlinx.android.synthetic.main.fragment_custom_scanner.*
 
-class CustomScannerFragment: ScannerFragment() {
+class CustomScannerFragment : ScannerFragment() {
+
     override fun getLayoutId(): Int = R.layout.fragment_custom_scanner
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -15,4 +16,5 @@ class CustomScannerFragment: ScannerFragment() {
             listener.onScan("123456")
         }
     }
+
 }
