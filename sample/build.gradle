@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.13.3"
+def sonectSdkVersion = "1.14.0"
 
 android {
     compileSdkVersion 29
@@ -76,7 +76,7 @@ android {
             dimension = "sdkDependency"
             firebaseAppDistribution {
                 groups="internal"
-                releaseNotes="Internal RC Sonect SDK version inside"
+                releaseNotes="Internal RC Sonect SDK version inside: $sonectSdkVersion"
             }
         }
         external {
