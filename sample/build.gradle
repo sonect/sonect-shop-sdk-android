@@ -75,9 +75,8 @@ android {
         internal {
             dimension = "sdkDependency"
             firebaseAppDistribution {
-                def internalVersion = sonectConfig.shopSdkVersion ?: "Unknown"
                 groups="internal"
-                releaseNotes="Internal RC Sonect SDK version inside: $internalVersion"
+                releaseNotes="Internal RC Sonect SDK version inside"
             }
         }
         external {
