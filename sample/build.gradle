@@ -12,7 +12,6 @@ def getVersionCode = { ->
 }
 
 def sonectSdkVersion = "1.13.3"
-def sonectInternalSdkVersion = sonectConfig.shopSdkVersion ?: "Unknown"
 
 
 android {
@@ -78,7 +77,7 @@ android {
             dimension = "sdkDependency"
             firebaseAppDistribution {
                 groups="internal"
-                releaseNotes="Internal RC Sonect SDK version inside: $sonectInternalSdkVersion"
+                releaseNotes="Internal RC Sonect SDK version inside"
             }
         }
         external {
