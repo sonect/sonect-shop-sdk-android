@@ -16,11 +16,11 @@ def sonectInternalSdkVersion = sonectConfig.shopSdkVersion ?: "Unknown"
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "ch.sonect.sdk.shop.integrationapp"
         minSdk 19
-        targetSdk 29
+        targetSdk 30
         versionCode getVersionCode()
         versionName "1.0+" + getVersionCode()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
