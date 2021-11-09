@@ -1,11 +1,15 @@
 package ch.sonect.sdk.shop.integrationapp.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import ch.sonect.sdk.shop.SonectSDK
 import ch.sonect.sdk.shop.integrationapp.R
 import ch.sonect.sdk.shop.integrationapp.data.Config
+import ch.sonect.sdk.shop.integrationapp.data.PredefineConfig
 import ch.sonect.sdk.shop.integrationapp.ui.common.viewModelProvider
 import ch.sonect.sdk.shop.integrationapp.ui.sdkwrapper.SdkWrapperActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,10 +23,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        groupEnviroment.setOnCheckedChangeListener { _, _ ->
-            viewModel.changeEnvironment(getSelectedEnvironment())
-        }
 
         viewModel.state.observe(this, Observer {
             when (it) {
@@ -57,6 +57,20 @@ class MainActivity : AppCompatActivity() {
             viewModel.save(config)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.configs, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.bnl -> {
+            viewModel.loadPredefinedConfig(PredefineConfig.Bnl)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun prepareConfig(
@@ -102,10 +116,17 @@ class MainActivity : AppCompatActivity() {
                 is Config.HmacKey -> etHmacKey.setText(it.value)
                 is Config.Environment -> {
                     if (!selectEnv) return@forEach
+
+                    groupEnviroment.setOnCheckedChangeListener(null)
+
                     when (it.env) {
                         SonectSDK.Config.Enviroment.DEV -> chkDev.isChecked = true
                         SonectSDK.Config.Enviroment.STAGING -> chkTest.isChecked = true
                         SonectSDK.Config.Enviroment.PRODUCTION -> chkProd.isChecked = true
+                    }
+
+                    groupEnviroment.setOnCheckedChangeListener { _, _ ->
+                        viewModel.changeEnvironment(getSelectedEnvironment())
                     }
                 }
                 is Config.Theme -> {

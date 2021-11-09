@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import ch.sonect.sdk.shop.SonectSDK
 import ch.sonect.sdk.shop.integrationapp.data.Config
 import ch.sonect.sdk.shop.integrationapp.data.ConfigRepository
+import ch.sonect.sdk.shop.integrationapp.data.PredefineConfig
 
 class MainActivityViewModel(private val configRepository: ConfigRepository) : ViewModel() {
 
@@ -26,6 +27,10 @@ class MainActivityViewModel(private val configRepository: ConfigRepository) : Vi
     fun changeEnvironment(env: SonectSDK.Config.Enviroment) {
         configRepository.setupEnvironment(env)
         _state.value = DataState.LoadedConfig(configRepository.getConfig())
+    }
+
+    fun loadPredefinedConfig(predefineConfig: PredefineConfig) {
+        _state.value = DataState.InitialLoadedConfig(predefineConfig.config)
     }
 
     sealed class DataState {
