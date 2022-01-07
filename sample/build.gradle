@@ -16,7 +16,7 @@ def sonectInternalSdkVersion = sonectConfig.shopSdkVersion ?: "Unknown"
 
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     defaultConfig {
         applicationId "ch.sonect.sdk.shop.integrationapp"
         minSdk 19
