@@ -3,4 +3,7 @@
     <item android:id="@+id/bnl"
         android:title="BNL - Staging (TEST)"
         android:showAsAction="never"/>
+    <item android:id="@+id/italiano"
+        android:title="Italiano - Staging (TEST)"
+        android:showAsAction="never"/>
 </menu>

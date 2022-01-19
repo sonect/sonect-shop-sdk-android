@@ -18,4 +18,19 @@ sealed class PredefineConfig(val config: Set<Config>) {
             Config.AdditionalData(""),
         )
     )
+    object Italiano : PredefineConfig(
+        setOf(
+            Config.Environment(SonectSDK.Config.Enviroment.STAGING),
+            Config.MerchantId(""),
+            Config.DeviceId(""),
+            Config.ClientId("50c4f5f0-b229-11ea-bad4-f923de7877da"),
+            Config.ClientSecret("e22800bd1495f833fef842382951affb98557e6424748810562fcae0a96ecc76"),
+            Config.HmacKey("5da1baaca50bc1cde69eac15a4b29d745ec3ff0567f8fcbe15c512050a6cec6e"),
+            Config.Theme(isLight = true),
+            Config.Scanner(isScandit = true),
+            Config.RandomShop(isRandomShopOnStart = false),
+            Config.RandomBeneficiary(isRandomBeneficiary = false),
+            Config.AdditionalData(""),
+        )
+    )
 }

@@ -70,6 +70,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.loadPredefinedConfig(PredefineConfig.Bnl)
             true
         }
+        R.id.italiano -> {
+            viewModel.loadPredefinedConfig(PredefineConfig.Italiano)
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
