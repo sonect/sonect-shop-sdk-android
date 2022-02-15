@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "ch.sonect.sdk.shop.integrationapp"
         minSdk 19
-        targetSdk 30
+        targetSdk 31
         versionCode getVersionCode()
         versionName "1.0+" + getVersionCode()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
