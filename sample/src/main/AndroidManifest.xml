@@ -16,7 +16,9 @@
         android:networkSecurityConfig="@xml/network_security"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-        <activity android:name="ch.sonect.sdk.shop.integrationapp.ui.main.MainActivity">
+        <activity
+            android:name="ch.sonect.sdk.shop.integrationapp.ui.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
