@@ -115,9 +115,6 @@ dependencies {
     internalImplementation project(path: ':sdk-domain')
     internalImplementation project(path: ':okhttp')
 
-    // Idenfy
-    implementation 'com.github.idenfy:sdk-api:6.0.5'
-
     externalImplementation "com.squareup.okhttp3:okhttp:3.14.9"
     externalImplementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
 }

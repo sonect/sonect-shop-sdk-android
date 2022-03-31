@@ -47,17 +47,6 @@ dependencies {
 }
 ```
 
-If you need iDenfy also include their dependencies:
-
-```Gradle
-dependencies {
-	...
-    //Idenfy
-    implementation 'com.github.idenfy:sdk-api:5.1.1'
-    ...
-}
-```
-
 ## SDK Integration 
 
 To start `SDK` you need to create `SonectSDK` with provided `Config`. `Config` is created via `Builder`.
