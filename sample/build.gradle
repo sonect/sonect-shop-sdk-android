@@ -89,6 +89,11 @@ android {
             }
         }
     }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file('../lint.xml')
+    }
 }
 
 buildscript {
