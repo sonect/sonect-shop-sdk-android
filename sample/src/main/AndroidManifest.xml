@@ -27,7 +27,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="ch.sonect.sdk.shop.integrationapp.ui.sdkwrapper.SdkWrapperActivity" />
+        <activity
+            android:name="ch.sonect.sdk.shop.integrationapp.ui.sdkwrapper.SdkWrapperActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
