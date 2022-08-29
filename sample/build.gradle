@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.23.2"
+def sonectSdkVersion = "1.24.0"
 def sonectInternalSdkVersion = sonectConfig.shopSdkVersion ?: "Unknown"
 
 
