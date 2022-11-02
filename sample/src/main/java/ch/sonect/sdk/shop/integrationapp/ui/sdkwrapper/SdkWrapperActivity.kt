@@ -173,6 +173,7 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
             city = randomString(),
             zipCode = Random.nextInt(1000, 10000).toString(),
             country = randomString(),
+            countryCode = "CH",
         ),
         openHours = SonectSDK.Config.OpeningHours(
             monday = listOf(SonectSDK.Config.OpenCloseTime(getRandomCloseHours(), getRandomOpenHours())),
@@ -197,6 +198,7 @@ class SdkWrapperActivity : AppCompatActivity(), ActivityResultStorage {
         city = randomString(),
         zipCode = Random.nextInt(1000, 10000).toString(),
         country = randomString(),
+        countryCode = "CH",
     )
 
     private fun randomString() = (1..10).map { CHARS.random() }.joinToString(separator = "")
