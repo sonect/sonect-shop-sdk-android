@@ -112,7 +112,7 @@ dependencies {
 
     externalImplementation ("com.github.sonect:android-shop-sdk:$sonectSdkVersion") {
         exclude module: "okhttp4"
-    }shop/
+    }
 
     // For Sonect internal usage and direct dependency to source code
     internalImplementation project(path: ':sdk-shop')
