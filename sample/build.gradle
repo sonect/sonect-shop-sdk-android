@@ -11,7 +11,7 @@ def getVersionCode = { ->
     return code
 }
 
-def sonectSdkVersion = "1.26.0"
+def sonectSdkVersion = "1.27.0"
 def sonectInternalSdkVersion = sonectConfig.shopSdkVersion ?: "Unknown"
 
 
@@ -112,7 +112,7 @@ dependencies {
 
     externalImplementation ("com.github.sonect:android-shop-sdk:$sonectSdkVersion") {
         exclude module: "okhttp4"
-    }
+    }shop/
 
     // For Sonect internal usage and direct dependency to source code
     internalImplementation project(path: ':sdk-shop')
